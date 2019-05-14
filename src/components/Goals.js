@@ -39,7 +39,7 @@ class Goals extends Component {
   render(){
     var currentTime = new Date().getDate();
     console.log(this.props)
-
+    
     return(
       <View>
         <View style={styles.headerStyle}>
@@ -61,7 +61,10 @@ class Goals extends Component {
            
           </View>
           <Calendar
-            
+            markedDates={{
+              '2019-05-18': {dots: [igen, igen]},
+              '2019-05-15': {dots: [nem, igen]}
+            }}
             markingType={'multi-dot'}
           />
         </View>
