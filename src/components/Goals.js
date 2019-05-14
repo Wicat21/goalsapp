@@ -1,0 +1,139 @@
+import React, {Component} from 'react';
+import {StyleSheet, Text, View, TouchableOpacity, FlatList} from 'react-native';
+import {Scene, Router, Actions} from 'react-native-router-flux';
+import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
+import {connect} from 'react-redux';
+import {loadLocalData} from '../actions';
+
+import type Moment from 'moment';
+
+const nem = {key:'nem', color: 'red'};
+const igen = {key:'igen', color: 'green'};
+
+class Goals extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentdate: '',
+      title:'',
+      completed: ''
+    };
+  }
+
+  componentWillMount(){
+    this.props.loadLocalData();
+  }
+
+  componentDidMount () {
+    var date = new Date().getDate();
+    var month = new Date().getMonth() + 1;
+    var year = new Date().getFullYear();
+    this.setState({
+      currentdate: year +'. '+ month +'. '+ date +'.'
+    });
+  }
+
+  render(){
+    var currentTime = new Date().getDate();
+    return(
+      <View>
+        <View style={styles.headerStyle}>
+          <View>
+            <Text style={styles.headerText}>Goals</Text>
+          </View>
+          <TouchableOpacity style={styles.buttonStyle}>
+            <Text style={styles.buttonText} onPress={() =>  Actions.AddGoals({valueJSON: this.state.valueJSON})}> + </Text>
+          </TouchableOpacity>
+        </View>
+        <View>
+          <View style={styles.headerStyle2}>
+            <Text style={styles.headerText2}>Célok</Text>
+            <Text style={styles.headerText2}>
+              Mai dátum: {this.state.currentdate}
+            </Text>
+          </View>
+          <View>
+            <FlatList
+              data={this.props.data}
+              renderItem={({item}) => <GoalItem  data={item}/>} 
+              keyExtractor={(item, index) => index.toString()}
+            />
+          </View>
+          <Calendar
+            markedDates={{
+              '2019-05-18': {dots: [igen, igen]},
+              '2019-05-15': {dots: [nem, igen]}
+            }}
+            markingType={'multi-dot'}
+          />
+        </View>
+      </View>
+    )
+  }
+};
+
+const styles = {
+  headerStyle:{
+    backgroundColor: '#383f51',
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 5,
+    height: 60,
+    position: 'relative',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  headerText: {
+    fontSize: 20,
+    padding: 25,
+    color: 'white'
+  },
+    buttonStyle: {
+    position: 'relative',
+    backgroundColor: '#3c4f76',
+    width: 50,
+    height: 50,
+    borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 8,
+    left: -10
+  },
+  buttonText: {
+    fontSize: 20,
+    color: '#fff'
+  },
+  headerStyle2:{
+    backgroundColor: '#3c4f76',
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 5,
+    height: 40,
+    position: 'relative',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  headerText2: {
+    fontSize: 15,
+    padding: 25,
+    color: 'white'
+  },
+};
+
+const mapStateToProps = state => {
+  return {data:state.data}
+}
+
+//function mapDispatchToProps(dispatch) {
+//    return {
+//        actions: bindActionCreators({ fetchPosts }, dispatch)
+//    };
+//}
+
+export default connect (mapStateToProps, {loadLocalData})(Goals);
