@@ -5,16 +5,25 @@ import {
 } from '../actions/constants';
 
 const localDataExample = {
-	title: "Első cél"
+	title: "Első cél",
+	errorMessage:"error"
 }
 
-export default (state=localDataExample, action) => {
+export const data = (state = localDataExample, action) => {
 	switch (action.type) {
 		case LOAD_LOCAL_DATA_SUCCESS:
-			return action.data;
+	console.log("load data")
+
+			return {...state,
+        title: action.title
+      };
 		case LOAD_LOCAL_DATA_FAILURE:
-			return action.error;
+		return {...state,
+        errorMessage: action.error
+      };
 		case SAVE_LOCAL_DATA:
+	console.log("save data")
+
 			return {
 				...state
 			};

@@ -4,7 +4,7 @@ import RouterComponent from './src/components/Router';
 import {Provider} from 'react-redux';
 import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
-import reducers from './src/reducers/GoalReducer';
+import reducers from './src/store/index';
 
 const store = createStore(reducers, applyMiddleware(thunk));
 

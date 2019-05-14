@@ -9,24 +9,20 @@ import AsyncStorage from '@react-native-community/async-storage';
 const LOCALS_STORAGE = '@goals:locals';
 
 export const loadLocalData = () => async (dispatch, getState) => {
-	//const {uid} = getState().user;
-	try {
 		const value = await AsyncStorage.getItem(`${LOCALS_STORAGE}`);
 		if (value !== null) {
-			dispatch({type: LOAD_LOCAL_DATA_SUCCESS, data: JSON.parse(value)});
+			console.log(value)
+			dispatch({type: LOAD_LOCAL_DATA_SUCCESS, title: JSON.parse(value)});
+		} else {
+		dispatch({type:LOAD_LOCAL_DATA_FAILURE, error: "error"})
 		}
-	} catch (error) {
-		console.log(error);
-		dispatch({type:LOAD_LOCAL_DATA_FAILURE, error: error})
-	}
 };
 
 export const saveLocalData = () => async (dispatch, getState) => {
-	const {
-		//user: {uid},
+	/*const {
 		title,
-	} = getState();
-	AsyncStorage.setItem(`${LOCALS_STORAGE}`, JSON.stringify(title));
+	} = getState();*/
+	await AsyncStorage.setItem(`${LOCALS_STORAGE}`, JSON.stringify("title"));
 	dispatch({type: SAVE_LOCAL_DATA});
 };
 

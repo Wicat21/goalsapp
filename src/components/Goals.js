@@ -3,7 +3,8 @@ import {StyleSheet, Text, View, TouchableOpacity, FlatList} from 'react-native';
 import {Scene, Router, Actions} from 'react-native-router-flux';
 import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
 import {connect} from 'react-redux';
-import {loadLocalData} from '../actions';
+import {loadLocalData, saveLocalData} from '../actions';
+import GoalItem from './GoalItem'
 
 import type Moment from 'moment';
 
@@ -18,6 +19,7 @@ class Goals extends Component {
       title:'',
       completed: ''
     };
+    this.props.saveLocalData()
   }
 
   componentWillMount(){
@@ -25,6 +27,7 @@ class Goals extends Component {
   }
 
   componentDidMount () {
+    console.log(this.props)
     var date = new Date().getDate();
     var month = new Date().getMonth() + 1;
     var year = new Date().getFullYear();
@@ -35,6 +38,8 @@ class Goals extends Component {
 
   render(){
     var currentTime = new Date().getDate();
+    console.log(this.props)
+
     return(
       <View>
         <View style={styles.headerStyle}>
@@ -53,17 +58,10 @@ class Goals extends Component {
             </Text>
           </View>
           <View>
-            <FlatList
-              data={this.props.data}
-              renderItem={({item}) => <GoalItem  data={item}/>} 
-              keyExtractor={(item, index) => index.toString()}
-            />
+           
           </View>
           <Calendar
-            markedDates={{
-              '2019-05-18': {dots: [igen, igen]},
-              '2019-05-15': {dots: [nem, igen]}
-            }}
+            
             markingType={'multi-dot'}
           />
         </View>
@@ -76,6 +74,7 @@ const styles = {
   headerStyle:{
     backgroundColor: '#383f51',
     shadowColor: '#000',
+    marginTop:40,
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.1,
     shadowRadius: 2,
@@ -130,10 +129,10 @@ const mapStateToProps = state => {
   return {data:state.data}
 }
 
-//function mapDispatchToProps(dispatch) {
-//    return {
-//        actions: bindActionCreators({ fetchPosts }, dispatch)
-//    };
-//}
-
-export default connect (mapStateToProps, {loadLocalData})(Goals);
+export default connect(
+  ({ data }) => ({ data }),
+  {
+    loadLocalData,
+    saveLocalData
+  },
+)(Goals);

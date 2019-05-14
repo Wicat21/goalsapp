@@ -7,7 +7,7 @@ const GoalItem = (props) => {
 	return (
 		<View style={styles.card}>
 			<Text>{item.title}</Text> 
-			<TouchableWithoutFeedback onPress={()=> props.selectGoal(props.data)}>
+			<TouchableWithoutFeedback onPress={()=> console.log('hey')}>
 				<Text>Kész</Text>
 			</TouchableWithoutFeedback>
 		</View>
@@ -17,7 +17,7 @@ const GoalItem = (props) => {
 const styles = StyleSheet.create({
 	card: {
 		marginTop: 20,
-		height: 100px,
+		height: 100,
 		backgroundColor: 'red',
 	},
 	title: {
@@ -40,5 +40,3 @@ const styles = StyleSheet.create({
 		backgroundColor: 'rgba(255,255,255,0)',
 	},
 });
-
-export default connect (null, actions)(GoalItem);
