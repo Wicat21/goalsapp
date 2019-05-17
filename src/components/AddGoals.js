@@ -2,12 +2,13 @@ import React, {Component} from 'react';
 import { Text, View, TextInput, StyleSheet, Button} from 'react-native';
 import {Scene, Router, Actions} from 'react-native-router-flux';
 import {connect} from 'react-redux';
-import * as actions from '../actions';
+import {createGoal, formUpdate, saveLocalData} from '../actions';
 
 class AddGoals extends Component {
 	onAddPress(){
-		const {title} = this.props;
-		this.props.createNewGoal({title});
+		const {title} = this.props.data.goals;
+		this.props.createGoal({title});
+		this.props.saveLocalData({title});
 		this.props.navigation.navigate('Goals');
 	}
   	render(){
@@ -17,17 +18,17 @@ class AddGoals extends Component {
 	          <Text>Cél neve</Text>
 	          <TextInput 
 	          	textInputStyle={styles.fieldStyles} 
-	          	value={this.props.title}
+	          	value={this.props.data.goals.title}
 	          	onChangeText={value => this.props.formUpdate({prop:'title', value})}
 	          	/>
 	        </View>
 	        <View style={styles.addButton}>
-				<Button 
-					onPress={this.onAddPress.bind(this)}
-					title="Mentés"
-					color="blue"
-				/>
-			</View>
+						<Button 
+							onPress={this.onAddPress.bind(this)}
+							title="Mentés"
+							color="#3c4f76"
+						/>
+					</View>
 	      </View>
 	    )
   }
@@ -52,9 +53,12 @@ const styles = StyleSheet.create({
 	}
 });
 
-const mapStateToProps = state => {
-	const {title} = state;
-	return {title};
-}
 
-export default connect (mapStateToProps, actions)(AddGoals);
+export default connect(
+  ({ data }) => ({ data }),
+  {
+    createGoal,
+		formUpdate,
+		saveLocalData
+  },
+)(AddGoals);

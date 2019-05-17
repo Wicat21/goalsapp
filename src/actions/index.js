@@ -1,7 +1,9 @@
 import {
 	LOAD_LOCAL_DATA_SUCCESS,
 	LOAD_LOCAL_DATA_FAILURE,
-	SAVE_LOCAL_DATA
+	SAVE_LOCAL_DATA,
+	FORM_UPDATE,
+	CREATE_GOAL
 } from './constants';
 
 import AsyncStorage from '@react-native-community/async-storage';
@@ -22,7 +24,20 @@ export const saveLocalData = () => async (dispatch, getState) => {
 	/*const {
 		title,
 	} = getState();*/
-	await AsyncStorage.setItem(`${LOCALS_STORAGE}`, JSON.stringify("title"));
+	await AsyncStorage.setItem(`${LOCALS_STORAGE}`, JSON.stringify(this.props.data.goals));
 	dispatch({type: SAVE_LOCAL_DATA});
 };
 
+export const formUpdate = ({prop, value}) => {
+	return {
+		type: FORM_UPDATE,
+		payload: {prop,value},
+	};
+};
+
+export const createGoal = (dispatch, title) => {
+	dispatch({
+		type: CREATE_GOAL,
+		payload: title
+	});
+};

@@ -6,7 +6,7 @@ import * as actions from '../actions';
 const GoalItem = (props) => {
 	return (
 		<View style={styles.card}>
-			<Text>{item.title}</Text> 
+			<Text>{this.props.title}</Text> 
 			<TouchableWithoutFeedback onPress={()=> console.log('hey')}>
 				<Text>Kész</Text>
 			</TouchableWithoutFeedback>
@@ -40,3 +40,5 @@ const styles = StyleSheet.create({
 		backgroundColor: 'rgba(255,255,255,0)',
 	},
 });
+
+export default GoalItem;

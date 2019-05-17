@@ -4,7 +4,7 @@ import {Scene, Router, Actions} from 'react-native-router-flux';
 import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
 import {connect} from 'react-redux';
 import {loadLocalData, saveLocalData} from '../actions';
-import GoalItem from './GoalItem'
+import GoalItem from './GoalItem';
 
 import type Moment from 'moment';
 
@@ -17,9 +17,9 @@ class Goals extends Component {
     this.state = {
       currentdate: '',
       title:'',
-      completed: ''
+      completed: '',
+      goals: []
     };
-    this.props.saveLocalData()
   }
 
   componentWillMount(){
@@ -32,14 +32,33 @@ class Goals extends Component {
     var month = new Date().getMonth() + 1;
     var year = new Date().getFullYear();
     this.setState({
-      currentdate: year +'. '+ month +'. '+ date +'.'
+      currentdate: year +'-'+ month +'-'+ date
     });
   }
 
+  /*componentWillUnmount(){
+    this.props.saveLocalData()
+  }*/
+  
+  renderItem = ({item}) => {
+    <GoalItem/>
+  }
+  
+  renderList(){
+    return (
+      <FlatList
+        data={this.props.data.goals}
+        style={{flex:1}}
+        renderItem={this.renderItem}
+        keyExtractor={(item, index) => {
+          return index.toString();
+        }}
+      />
+      )
+  }
+
   render(){
-    var currentTime = new Date().getDate();
     console.log(this.props)
-    
     return(
       <View>
         <View style={styles.headerStyle}>
@@ -58,12 +77,13 @@ class Goals extends Component {
             </Text>
           </View>
           <View>
-           
+            {this.renderList()}
+            <Text>{this.props.data.title}</Text>
           </View>
           <Calendar
             markedDates={{
               '2019-05-18': {dots: [igen, igen]},
-              '2019-05-15': {dots: [nem, igen]}
+              '2019-05-20': {dots: [nem, igen]}
             }}
             markingType={'multi-dot'}
           />
@@ -77,7 +97,6 @@ const styles = {
   headerStyle:{
     backgroundColor: '#383f51',
     shadowColor: '#000',
-    marginTop:40,
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.1,
     shadowRadius: 2,
@@ -128,9 +147,6 @@ const styles = {
   },
 };
 
-const mapStateToProps = state => {
-  return {data:state.data}
-}
 
 export default connect(
   ({ data }) => ({ data }),
