@@ -1,52 +1,66 @@
-import React, {Component} from 'react';
-import {StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
-import { Actions} from 'react-native-router-flux';
-import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
-import {connect} from 'react-redux';
-import {loadLocalData, saveLocalData, markGoal} from '../actions';
+import React, { Component } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity
+} from "react-native";
+import { Actions } from "react-native-router-flux";
+import { Calendar, CalendarList, Agenda } from "react-native-calendars";
+import { connect } from "react-redux";
+import { loadLocalData, saveLocalData, markGoal } from "../actions";
 
-const nem = {key:'nem', color: 'red'};
-const igen = {key:'igen', color: 'green'};
+const nem = { key: "nem", color: "red" };
+const igen = { key: "igen", color: "green" };
 
 class Goals extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentdate: '',
-      title:'',
-      marked: '',
+      currentdate: "",
+      title: "",
+      marked: "",
       goals: []
     };
   }
 
-  componentWillMount(){
+  componentWillMount() {
     this.props.loadLocalData();
   }
 
-  componentDidMount () {
-    console.log(this.props)
+  componentDidMount() {
+    console.log(this.props);
     var date = new Date().getDate();
     var month = new Date().getMonth() + 1;
     var year = new Date().getFullYear();
     this.setState({
-      currentdate: year +'-'+ month +'-'+ date
+      currentdate: year + "-" + month + "-" + date
     });
   }
 
   /*componentWillUnmount(){
     this.props.saveLocalData()
   }*/
-  
-  render(){
-    console.log(this.props)
-    return(
+
+  render() {
+    console.log(this.props);
+    const data = this.props.data.goals;
+    return (
       <View>
         <View style={styles.headerStyle}>
           <View>
             <Text style={styles.headerText}>Goals</Text>
           </View>
           <TouchableOpacity style={styles.buttonStyle}>
-            <Text style={styles.buttonText} onPress={() =>  Actions.AddGoals({valueJSON: this.state.valueJSON})}> + </Text>
+            <Text
+              style={styles.buttonText}
+              onPress={() =>
+                Actions.AddGoals({ valueJSON: this.state.valueJSON })
+              }
+            >
+              {" "}
+              +{" "}
+            </Text>
           </TouchableOpacity>
         </View>
         <View>
@@ -58,94 +72,101 @@ class Goals extends Component {
           </View>
           <View>
             {this.props.data.goals.map((item, i) => {
-              console.log(item)
-              return (                    
-                <View style={styles.card}>
-                  <Text style={{flex:5}}>{item.title}</Text> 
-                  <TouchableWithoutFeedback onPress={()=> this.props.markGoal(item.title)} style={{flex:2}}>
+              console.log(item);
+              const markedColor = item.marked ? "blue" : "red";
+              return (
+                <View style={[styles.card, { borderColor: markedColor }]}>
+                  <Text style={{ flex: 5 }}>{item.title}</Text>
+                  <TouchableOpacity
+                    onPress={() => {
+                      data[i].marked = true;
+                      console.log(data);
+                      this.props.markGoal(data);
+                    }}
+                    style={{ flex: 2 }}
+                  >
                     <Text>Kész</Text>
-                  </TouchableWithoutFeedback>
+                  </TouchableOpacity>
                 </View>
-              ) 
+              );
             })}
             <Text>{this.props.data.goals.title}</Text>
           </View>
           <Calendar
             markedDates={{
-              '2019-05-18': {dots: [igen, igen]},
-              '2019-05-20': {dots: [nem, igen]}
+              "2019-05-18": { dots: [igen, igen] },
+              "2019-05-20": { dots: [nem, igen] }
             }}
-            markingType={'multi-dot'}
+            markingType={"multi-dot"}
           />
         </View>
       </View>
-    )
+    );
   }
-};
+}
 
 const styles = {
-  headerStyle:{
-    backgroundColor: '#383f51',
-    marginTop:40,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
+  headerStyle: {
+    backgroundColor: "#383f51",
+    marginTop: 40,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
     elevation: 5,
     height: 60,
-    position: 'relative',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
+    position: "relative",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
   },
   headerText: {
     fontSize: 20,
     padding: 25,
-    color: 'white'
+    color: "white"
   },
-    buttonStyle: {
-    position: 'relative',
-    backgroundColor: '#3c4f76',
+  buttonStyle: {
+    position: "relative",
+    backgroundColor: "#3c4f76",
     width: 50,
     height: 50,
     borderRadius: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     elevation: 8,
     left: -10
   },
   buttonText: {
     fontSize: 20,
-    color: '#fff'
+    color: "#fff"
   },
-  headerStyle2:{
-    backgroundColor: '#3c4f76',
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
+  headerStyle2: {
+    backgroundColor: "#3c4f76",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
     elevation: 5,
     height: 40,
-    position: 'relative',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
+    position: "relative",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
   },
   headerText2: {
     fontSize: 15,
     padding: 25,
-    color: 'white'
+    color: "white"
   },
   card: {
     marginTop: 20,
     marginLeft: 20,
     marginRight: 20,
-    flexDirection: 'row',
+    flexDirection: "row",
     borderWidth: 1,
-    borderColor: 'blue',
-    borderRadius: 5,
-
-	},
+    borderColor: "blue",
+    borderRadius: 5
+  }
 };
 
 export default connect(
@@ -154,5 +175,5 @@ export default connect(
     loadLocalData,
     saveLocalData,
     markGoal
-  },
+  }
 )(Goals);

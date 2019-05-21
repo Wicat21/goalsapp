@@ -41,13 +41,8 @@ export const data = (state = localDataExample, action) => {
 		case MARK_GOAL:
 			return {
 				...state,
-				goals: state.goals.map(goals => {
-					if (goals.title === action.payload.title) {
-						 return Object.assign({}, goals, { marked: true })
-					}
-					return goals;
-			}),
-			}								
+				goals: action.data
+			}			
 		default:
 			return state;
 	}
