@@ -3,3 +3,4 @@ export const LOAD_LOCAL_DATA_FAILURE = 'LOAD_LOCAL_DATA_FAILURE';
 export const SAVE_LOCAL_DATA = 'SAVE_LOCAL_DATA';
 export const FORM_UPDATE = 'FORM_UPDATE';
 export const CREATE_GOAL = 'CREATE_GOAL';
+export const MARK_GOAL = 'MARK_GOAL';

@@ -3,12 +3,13 @@ import {
 	LOAD_LOCAL_DATA_FAILURE,
 	SAVE_LOCAL_DATA, 
 	FORM_UPDATE,
-	CREATE_GOAL
+	CREATE_GOAL,
+	MARK_GOAL
 } from '../actions/constants';
 
 const localDataExample = {
 	errorMessage:"error",
-	goals: [{title:"Hah", marked: false}]
+	goals: [{ title:"Hah", marked: false}]
 }
 
 export const data = (state = localDataExample, action) => {
@@ -36,7 +37,17 @@ export const data = (state = localDataExample, action) => {
 			return {
 				...state,
 				goals: action.payload
-			}					
+			}		
+		case MARK_GOAL:
+			return {
+				...state,
+				goals: state.goals.map(goals => {
+					if (goals.title === action.payload.title) {
+						 return Object.assign({}, goals, { marked: true })
+					}
+					return goals;
+			}),
+			}								
 		default:
 			return state;
 	}

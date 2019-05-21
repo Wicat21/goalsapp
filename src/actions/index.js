@@ -3,11 +3,11 @@ import {
 	LOAD_LOCAL_DATA_FAILURE,
 	SAVE_LOCAL_DATA,
 	FORM_UPDATE,
-	CREATE_GOAL
+	CREATE_GOAL,
+	MARK_GOAL
 } from './constants';
 
 import AsyncStorage from '@react-native-community/async-storage';
-import { ActionConst } from 'react-native-router-flux';
 
 const LOCALS_STORAGE = '@goals:locals';
 
@@ -22,9 +22,6 @@ export const loadLocalData = () => async (dispatch, getState) => {
 };
 
 export const saveLocalData = () => async (dispatch, getState) => {
-	/*const {
-		title,
-	} = getState();*/
 	const goals = getState().goals
 	await AsyncStorage.setItem(`${LOCALS_STORAGE}`, JSON.stringify(goals));
 	dispatch({type: SAVE_LOCAL_DATA});
@@ -37,16 +34,19 @@ export const formUpdate = ({prop, value}) => {
 	};
 };
 
-export const createGoal = ({goals, title, marked}) => {
+export const createGoal = ({goals, title}) => {
 	return (dispatch) => {
-		/*this.props.data.goals
-		.push({title, marked});
-		then(()=>{*/
 			dispatch({
 				type: CREATE_GOAL,
 				payload: goals.concat([{ title: title, marked: false}])
 			})
 			// dispatch(saveLocalData())  ezt még nem tudtam megcsinálni, valahogy le kell menteni vele a savelocaldataban van hiba
 		//});
+	};
+};
+
+export const markGoal = () => {
+	return {
+		type: MARK_GOAL,
 	};
 };

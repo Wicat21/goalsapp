@@ -3,7 +3,7 @@ import {StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback} from
 import { Actions} from 'react-native-router-flux';
 import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
 import {connect} from 'react-redux';
-import {loadLocalData, saveLocalData} from '../actions';
+import {loadLocalData, saveLocalData, markGoal} from '../actions';
 
 const nem = {key:'nem', color: 'red'};
 const igen = {key:'igen', color: 'green'};
@@ -14,7 +14,7 @@ class Goals extends Component {
     this.state = {
       currentdate: '',
       title:'',
-      completed: '',
+      marked: '',
       goals: []
     };
   }
@@ -61,8 +61,8 @@ class Goals extends Component {
               console.log(item)
               return (                    
                 <View style={styles.card}>
-                  <Text>{item.title}</Text> 
-                  <TouchableWithoutFeedback onPress={()=> console.log('hey')}>
+                  <Text style={{flex:5}}>{item.title}</Text> 
+                  <TouchableWithoutFeedback onPress={()=> this.props.markGoal(item.title)} style={{flex:2}}>
                     <Text>Kész</Text>
                   </TouchableWithoutFeedback>
                 </View>
@@ -138,8 +138,13 @@ const styles = {
   },
   card: {
     marginTop: 20,
+    marginLeft: 20,
+    marginRight: 20,
     flexDirection: 'row',
-    justifyContent: 'space-around'
+    borderWidth: 1,
+    borderColor: 'blue',
+    borderRadius: 5,
+
 	},
 };
 
@@ -147,6 +152,7 @@ export default connect(
   ({ data }) => ({ data }),
   {
     loadLocalData,
-    saveLocalData
+    saveLocalData,
+    markGoal
   },
 )(Goals);
