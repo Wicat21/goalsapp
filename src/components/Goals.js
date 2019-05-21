@@ -86,6 +86,7 @@ class Goals extends Component {
 const styles = {
   headerStyle:{
     backgroundColor: '#383f51',
+    marginTop:40,
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.1,

@@ -25,7 +25,8 @@ export const saveLocalData = () => async (dispatch, getState) => {
 	/*const {
 		title,
 	} = getState();*/
-	await AsyncStorage.setItem(`${LOCALS_STORAGE}`, JSON.stringify(getState().goals));
+	const goals = getState().goals
+	await AsyncStorage.setItem(`${LOCALS_STORAGE}`, JSON.stringify(goals));
 	dispatch({type: SAVE_LOCAL_DATA});
 };
 
@@ -43,8 +44,9 @@ export const createGoal = ({goals, title, marked}) => {
 		then(()=>{*/
 			dispatch({
 				type: CREATE_GOAL,
-				payload: goals.concat({ title: title, marked: false})
+				payload: goals.concat([{ title: title, marked: false}])
 			})
+			// dispatch(saveLocalData())  ezt még nem tudtam megcsinálni, valahogy le kell menteni vele a savelocaldataban van hiba
 		//});
 	};
 };
