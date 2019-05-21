@@ -4,3 +4,4 @@ export const SAVE_LOCAL_DATA = 'SAVE_LOCAL_DATA';
 export const FORM_UPDATE = 'FORM_UPDATE';
 export const CREATE_GOAL = 'CREATE_GOAL';
 export const MARK_GOAL = 'MARK_GOAL';
+export const DELETE_GOAL = 'DELETE_GOAL';

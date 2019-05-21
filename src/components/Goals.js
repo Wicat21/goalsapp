@@ -8,7 +8,12 @@ import {
 import { Actions } from "react-native-router-flux";
 import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 import { connect } from "react-redux";
-import { loadLocalData, saveLocalData, markGoal } from "../actions";
+import { 
+  loadLocalData, 
+  saveLocalData, 
+  markGoal, 
+  deleteGoal 
+} from "../actions";
 
 const nem = { key: "nem", color: "red" };
 const igen = { key: "igen", color: "green" };
@@ -74,9 +79,10 @@ class Goals extends Component {
             {this.props.data.goals.map((item, i) => {
               console.log(item);
               const markedColor = item.marked ? "blue" : "red";
+              const markedText = item.marked ? "Kész" : "Nincs kész";
               return (
                 <View style={[styles.card, { borderColor: markedColor }]}>
-                  <Text style={{ flex: 5 }}>{item.title}</Text>
+                  <Text style={{ flex: 3 }}>{item.title}</Text>
                   <TouchableOpacity
                     onPress={() => {
                       data[i].marked = true;
@@ -85,7 +91,17 @@ class Goals extends Component {
                     }}
                     style={{ flex: 2 }}
                   >
-                    <Text>Kész</Text>
+                    <Text>{markedText}</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      data.splice(i, 1);
+                      console.log(data);
+                      this.props.deleteGoal(data);
+                    }}
+                    style={{ flex: 2 }}
+                  >
+                    <Text>Törlés</Text>
                   </TouchableOpacity>
                 </View>
               );
@@ -174,6 +190,7 @@ export default connect(
   {
     loadLocalData,
     saveLocalData,
-    markGoal
+    markGoal,
+    deleteGoal
   }
 )(Goals);
