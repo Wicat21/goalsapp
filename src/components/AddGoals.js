@@ -1,14 +1,13 @@
 import React, {Component} from 'react';
 import { Text, View, TextInput, StyleSheet, Button} from 'react-native';
-import {Scene, Router, Actions} from 'react-native-router-flux';
 import {connect} from 'react-redux';
 import {createGoal, formUpdate, saveLocalData} from '../actions';
 
 class AddGoals extends Component {
 	onAddPress(){
-		const {title} = this.props.data.goals;
-		this.props.createGoal({title});
-		this.props.saveLocalData({title});
+		const {goals} = this.props.data;
+		this.props.createGoal({goals});
+		this.props.saveLocalData({goals});
 		this.props.navigation.navigate('Goals');
 	}
   	render(){

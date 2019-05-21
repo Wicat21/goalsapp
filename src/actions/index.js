@@ -7,6 +7,7 @@ import {
 } from './constants';
 
 import AsyncStorage from '@react-native-community/async-storage';
+import { ActionConst } from 'react-native-router-flux';
 
 const LOCALS_STORAGE = '@goals:locals';
 
@@ -14,7 +15,7 @@ export const loadLocalData = () => async (dispatch, getState) => {
 		const value = await AsyncStorage.getItem(`${LOCALS_STORAGE}`);
 		if (value !== null) {
 			console.log(value)
-			dispatch({type: LOAD_LOCAL_DATA_SUCCESS, title: JSON.parse(value)});
+			dispatch({type: LOAD_LOCAL_DATA_SUCCESS, goals: JSON.parse(value)});
 		} else {
 		dispatch({type:LOAD_LOCAL_DATA_FAILURE, error: "error"})
 		}
@@ -24,7 +25,7 @@ export const saveLocalData = () => async (dispatch, getState) => {
 	/*const {
 		title,
 	} = getState();*/
-	await AsyncStorage.setItem(`${LOCALS_STORAGE}`, JSON.stringify(this.props.data.goals));
+	await AsyncStorage.setItem(`${LOCALS_STORAGE}`, JSON.stringify(getState().goals));
 	dispatch({type: SAVE_LOCAL_DATA});
 };
 
@@ -35,9 +36,15 @@ export const formUpdate = ({prop, value}) => {
 	};
 };
 
-export const createGoal = (dispatch, title) => {
-	dispatch({
-		type: CREATE_GOAL,
-		payload: title
-	});
+export const createGoal = ({goals, title, marked}) => {
+	return (dispatch) => {
+		/*this.props.data.goals
+		.push({title, marked});
+		then(()=>{*/
+			dispatch({
+				type: CREATE_GOAL,
+				payload: goals.concat({ title: title, marked: false})
+			})
+		//});
+	};
 };

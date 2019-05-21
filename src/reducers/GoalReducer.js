@@ -7,9 +7,8 @@ import {
 } from '../actions/constants';
 
 const localDataExample = {
-	title: "Első cél",
 	errorMessage:"error",
-	goals: [{title:"Hah"}]
+	goals: [{title:"Hah", marked: false}]
 }
 
 export const data = (state = localDataExample, action) => {
@@ -17,7 +16,7 @@ export const data = (state = localDataExample, action) => {
 		case LOAD_LOCAL_DATA_SUCCESS:
 			console.log("load data")
 			return {...state,
-		        title: action.title
+						goals: action.goals
 		      };
 		case LOAD_LOCAL_DATA_FAILURE:
 			return {...state,
@@ -36,7 +35,7 @@ export const data = (state = localDataExample, action) => {
 		case CREATE_GOAL:
 			return {
 				...state,
-        goals: [...state.goals, action.goals.title]
+				goals: action.payload
 			}					
 		default:
 			return state;

@@ -1,12 +1,9 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, TouchableOpacity, FlatList} from 'react-native';
-import {Scene, Router, Actions} from 'react-native-router-flux';
+import {StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
+import { Actions} from 'react-native-router-flux';
 import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
 import {connect} from 'react-redux';
 import {loadLocalData, saveLocalData} from '../actions';
-import GoalItem from './GoalItem';
-
-import type Moment from 'moment';
 
 const nem = {key:'nem', color: 'red'};
 const igen = {key:'igen', color: 'green'};
@@ -40,23 +37,6 @@ class Goals extends Component {
     this.props.saveLocalData()
   }*/
   
-  renderItem = ({item}) => {
-    <GoalItem/>
-  }
-  
-  renderList(){
-    return (
-      <FlatList
-        data={this.props.data.goals}
-        style={{flex:1}}
-        renderItem={this.renderItem}
-        keyExtractor={(item, index) => {
-          return index.toString();
-        }}
-      />
-      )
-  }
-
   render(){
     console.log(this.props)
     return(
@@ -77,8 +57,18 @@ class Goals extends Component {
             </Text>
           </View>
           <View>
-            {this.renderList()}
-            <Text>{this.props.data.title}</Text>
+            {this.props.data.goals.map((item, i) => {
+              console.log(item)
+              return (                    
+                <View style={styles.card}>
+                  <Text>{item.title}</Text> 
+                  <TouchableWithoutFeedback onPress={()=> console.log('hey')}>
+                    <Text>Kész</Text>
+                  </TouchableWithoutFeedback>
+                </View>
+              ) 
+            })}
+            <Text>{this.props.data.goals.title}</Text>
           </View>
           <Calendar
             markedDates={{
@@ -145,8 +135,12 @@ const styles = {
     padding: 25,
     color: 'white'
   },
+  card: {
+    marginTop: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-around'
+	},
 };
-
 
 export default connect(
   ({ data }) => ({ data }),
