@@ -7,6 +7,7 @@ import {
 } from "react-native";
 import { Actions } from "react-native-router-flux";
 import { Calendar, CalendarList, Agenda } from "react-native-calendars";
+//import Icon from 'react-native-vector-icons/EvilIcons';
 import { connect } from "react-redux";
 import { 
   loadLocalData, 
@@ -14,6 +15,7 @@ import {
   markGoal, 
   deleteGoal 
 } from "../actions";
+import {Scene, Router, Actions} from 'react-native-router-flux';
 
 const nem = { key: "nem", color: "red" };
 const igen = { key: "igen", color: "green" };
@@ -28,6 +30,29 @@ class Goals extends Component {
       goals: []
     };
   }
+  /*static navigationOptions = {
+    tabBarColor: 'blue',
+    tabBarIcon: {
+      icon: ({ tintColor }) => (
+        <Icon
+            name={'navicon'}
+            size={50} 
+            style={{ color: tintColor }}
+        />
+      )}
+    tabBarLabel: GOALS,
+  };
+ : {
+        label: 'GOALS',
+        icon: ({ tintColor }) => (
+            <Icon
+                name={'navicon'}
+                size={50} 
+                style={{ color: tintColor }}
+            />
+        )
+    }
+}*/
 
   componentWillMount() {
     this.props.loadLocalData();
