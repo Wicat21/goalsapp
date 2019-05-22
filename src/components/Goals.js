@@ -68,8 +68,8 @@ class Goals extends Component {
 
             {this.props.data.goals.map((item, i) => {
               console.log(item);
-              const markedColor = item.marked ? "red" : "green";
-              const markedIcon = item.marked ? 'minus' : 'check';
+              const markedColor = item.marked ? "green" : "red";
+              const markedIcon = item.marked ? 'check' : 'minus';
               return (
                 <View style={[styles.card, { borderColor: markedColor }]}>
                   <Text style={styles.titleText}>{item.title}</Text>
