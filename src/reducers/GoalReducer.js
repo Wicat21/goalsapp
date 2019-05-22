@@ -5,7 +5,8 @@ import {
 	FORM_UPDATE,
 	CREATE_GOAL,
 	MARK_GOAL,
-	DELETE_GOAL
+	DELETE_GOAL,
+	EDIT_GOAL
 } from '../actions/constants';
 
 const localDataExample = {
@@ -48,7 +49,12 @@ export const data = (state = localDataExample, action) => {
 				return {
 					...state,
 					goals: action.data
-				}			
+				}		
+		case EDIT_GOAL:
+				return {
+					...state,
+					title: newtitle
+				}						
 		default:
 			return state;
 	}

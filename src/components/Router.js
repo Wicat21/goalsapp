@@ -2,13 +2,15 @@ import React from 'react';
 import {Scene, Router, Actions} from 'react-native-router-flux';
 import Goals from './Goals';
 import AddGoals from './AddGoals';
+import EditGoal from './EditGoal';
 import CalendarScene from './CalendarScene';
 import Icon from 'react-native-vector-icons/EvilIcons';
 
 const RouterComponent = () => {
 	return (
 		<Router hideNavBar>
-			<Scene key="root" tabs={true}>
+			<Scene key="root" hideNavBar>
+				<Scene tabs={true}>
 					<Scene 
 						key="Goals" 
 						component={Goals} 
@@ -23,17 +25,17 @@ const RouterComponent = () => {
 								textStyle={focused ? styles.activeLabel : styles.label}
 							/>
 						)}
-					/>
+					>
+					</Scene>
 					<Scene 
 						key="AddGoals" 
-						onLeft={() => Actions.List()}
 						component={AddGoals} 
 						title="Add a new goal"
 						hideNavBar={true}
 						icon={({ focused }) => (
 							<Icon
 								size={40}
-								color={focused ? 'orange' : 'blue'}
+								color={focused ? 'orange' : 'blue'}								color={focused ? 'orange' : '#383f51'}
 								name={`plus`}
 								textStyle={focused ? styles.activeLabel : styles.label}
 							/>
@@ -53,6 +55,12 @@ const RouterComponent = () => {
 							/>
 						)}
 					/>
+				</Scene>
+				<Scene 
+					key="EditGoal"
+					component={EditGoal}
+					hideNavBar={true}
+				/>
 			</Scene>
 		</Router>
 	);

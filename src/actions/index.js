@@ -5,7 +5,8 @@ import {
   FORM_UPDATE,
   CREATE_GOAL,
   MARK_GOAL,
-  DELETE_GOAL
+  DELETE_GOAL,
+  EDIT_GOAL
 } from "./constants";
 
 import AsyncStorage from "@react-native-community/async-storage";
@@ -67,4 +68,14 @@ export const deleteGoal = data => {
 			dispatch(saveLocalData());
         //});
 	};
+};
+
+export const editGoal = data => {
+  return dispatch => {
+    dispatch({
+      type: EDIT_GOAL,
+      title: newtitle
+    });
+    dispatch(saveLocalData());
   };
+};

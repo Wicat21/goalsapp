@@ -6,22 +6,22 @@ import {createGoal, formUpdate, saveLocalData} from '../actions';
 class AddGoals extends Component {
   constructor(props) {
     super(props);
-    this.state = {
+    /*this.state = {
       title: 'ez a title'
-    };
+    };*/
   }
 
   onAddPress() {
 		const { goals } = this.props.data;
 		const title = this.state.title
-    this.props.createGoal({ goals, title });
+    this.props.editGoal({ goals, title });
     this.props.navigation.navigate("Goals");
   }
   render() {
     return (
       <View>
         <View style={styles.headerStyle}>
-            <Text style={styles.headerText}>Új cél</Text>
+            <Text style={styles.headerText}>Változtatás</Text>
         </View>
         <View stlye={styles.form}>
           <TextInput

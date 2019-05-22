@@ -3,7 +3,8 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity
+  TouchableOpacity,
+  ScrollView
 } from "react-native";
 import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
@@ -43,6 +44,10 @@ class Goals extends Component {
   /*componentWillUnmount(){
     this.props.saveLocalData()
   }*/
+  
+  onEditPress(){
+    this.props.navigation.navigate("EditGoal");
+  }
 
   render() {
     console.log(this.props);
@@ -50,20 +55,7 @@ class Goals extends Component {
     return (
       <View>
         <View style={styles.headerStyle}>
-          <View>
             <Text style={styles.headerText}>Goals</Text>
-          </View>
-          <TouchableOpacity style={styles.buttonStyle}>
-            <Text
-              style={styles.buttonText}
-              onPress={() =>
-                Actions.AddGoals({ valueJSON: this.state.valueJSON })
-              }
-            >
-              {" "}
-              +{" "}
-            </Text>
-          </TouchableOpacity>
         </View>
         <View>
           <View style={styles.headerStyle2}>
@@ -72,10 +64,11 @@ class Goals extends Component {
               Mai dátum: {this.state.currentdate}
             </Text>
           </View>
-          <View>
+          <ScrollView>
+
             {this.props.data.goals.map((item, i) => {
               console.log(item);
-              const markedColor = item.marked ? "blue" : "red";
+              const markedColor = item.marked ? "red" : "green";
               const markedIcon = item.marked ? 'minus' : 'check';
               return (
                 <View style={[styles.card, { borderColor: markedColor }]}>
@@ -96,11 +89,7 @@ class Goals extends Component {
                   </TouchableOpacity>
                   <View style={styles.editDelete}>
                   <TouchableOpacity
-                    onPress={() => {
-                      data.splice(i, 1);
-                      console.log(data);
-                      this.props.deleteGoal(data);
-                    }}
+                    onPress={() => this.onEditPress.bind(this)}
                     style={{ flex: 2 }}
                   >
                     <Icon
@@ -127,7 +116,8 @@ class Goals extends Component {
                 </View>
               );
             })}
-          </View>
+
+          </ScrollView>
         </View>
       </View>
     );
@@ -153,21 +143,6 @@ const styles = {
     fontSize: 20,
     padding: 25,
     color: "white"
-  },
-  buttonStyle: {
-    position: "relative",
-    backgroundColor: "#3c4f76",
-    width: 50,
-    height: 50,
-    borderRadius: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    elevation: 8,
-    left: -10
-  },
-  buttonText: {
-    fontSize: 20,
-    color: "#fff"
   },
   headerStyle2: {
     backgroundColor: "#3c4f76",
@@ -203,7 +178,8 @@ const styles = {
   titleText: {
     fontSize: 15,
     fontWeight: 'bold',
-    flex:4
+    flex:4,
+    paddingLeft: 10
   },
   editDelete: {
     flex:1,
