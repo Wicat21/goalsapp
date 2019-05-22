@@ -6,7 +6,6 @@ import {
   TouchableOpacity
 } from "react-native";
 import { Actions } from "react-native-router-flux";
-import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 import { connect } from "react-redux";
 import { 
   loadLocalData, 
@@ -15,8 +14,6 @@ import {
   deleteGoal 
 } from "../actions";
 
-const nem = { key: "nem", color: "red" };
-const igen = { key: "igen", color: "green" };
 
 class Goals extends Component {
   constructor(props) {
@@ -108,13 +105,6 @@ class Goals extends Component {
             })}
             <Text>{this.props.data.goals.title}</Text>
           </View>
-          <Calendar
-            markedDates={{
-              "2019-05-18": { dots: [igen, igen] },
-              "2019-05-20": { dots: [nem, igen] }
-            }}
-            markingType={"multi-dot"}
-          />
         </View>
       </View>
     );

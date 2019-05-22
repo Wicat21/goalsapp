@@ -2,12 +2,12 @@ import React from 'react';
 import {Scene, Router, Actions} from 'react-native-router-flux';
 import Goals from './Goals';
 import AddGoals from './AddGoals';
-import EditGoal from './EditGoal';
+import CalendarScene from './CalendarScene';
 
 const RouterComponent = () => {
 	return (
 		<Router hideNavBar>
-			<Scene key="root">
+			<Scene key="root" tabs={true}>
 					<Scene 
 						key="Goals" 
 						component={Goals} 
@@ -23,9 +23,9 @@ const RouterComponent = () => {
 						hideNavBar={true}
 					/>
 					<Scene 
-						key="EditGoal" 
-						component={EditGoal} 
-						title="Edit goal"
+						key="Calendar" 
+						component={CalendarScene} 
+						title="Calendar"
 						hideNavBar={true}
 					/>
 			</Scene>
