@@ -14,8 +14,8 @@ class CalendarScene extends Component {
           <Text>Calendar</Text>
           <Calendar
             markedDates={{
-              "2019-05-18": { dots: [igen, igen] },
-              "2019-05-20": { dots: [nem, igen] }
+              "2019-05-18": { dots: igen },
+              "2019-05-20": { dots: nem }
             }}
             markingType={"multi-dot"}
           />

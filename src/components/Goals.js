@@ -13,7 +13,7 @@ import {
   markGoal, 
   deleteGoal 
 } from "../actions";
-
+import Icon from 'react-native-vector-icons/EvilIcons';
 
 class Goals extends Component {
   constructor(props) {
@@ -76,19 +76,38 @@ class Goals extends Component {
             {this.props.data.goals.map((item, i) => {
               console.log(item);
               const markedColor = item.marked ? "blue" : "red";
-              const markedText = item.marked ? "Kész" : "Nincs kész";
+              const markedIcon = item.marked ? 'minus' : 'check';
               return (
                 <View style={[styles.card, { borderColor: markedColor }]}>
-                  <Text style={{ flex: 3 }}>{item.title}</Text>
+                  <Text style={styles.titleText}>{item.title}</Text>
                   <TouchableOpacity
                     onPress={() => {
                       data[i].marked = true;
                       console.log(data);
                       this.props.markGoal(data);
                     }}
+                    style={{ flex: 1 }}
+                  >
+                    <Icon
+                      size={40}
+                      color={markedColor}
+                      name={markedIcon}
+                    />
+                  </TouchableOpacity>
+                  <View style={styles.editDelete}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      data.splice(i, 1);
+                      console.log(data);
+                      this.props.deleteGoal(data);
+                    }}
                     style={{ flex: 2 }}
                   >
-                    <Text>{markedText}</Text>
+                    <Icon
+                      size={30}
+                      color={'black'}
+                      name={'pencil'}
+                    />
                   </TouchableOpacity>
                   <TouchableOpacity
                     onPress={() => {
@@ -98,12 +117,16 @@ class Goals extends Component {
                     }}
                     style={{ flex: 2 }}
                   >
-                    <Text>Törlés</Text>
+                    <Icon
+                      size={30}
+                      color={'black'}
+                      name={'trash'}
+                    />
                   </TouchableOpacity>
+                  </View>
                 </View>
               );
             })}
-            <Text>{this.props.data.goals.title}</Text>
           </View>
         </View>
       </View>
@@ -171,7 +194,21 @@ const styles = {
     flexDirection: "row",
     borderWidth: 1,
     borderColor: "blue",
-    borderRadius: 5
+    borderRadius: 10,
+    height: 75,
+    alignItems: 'center',
+    paddingLeft: 10,
+    paddingRight: 10
+  },
+  titleText: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    flex:4
+  },
+  editDelete: {
+    flex:1,
+    alignItems: 'flex-end',
+    padding: 5
   }
 };
 
