@@ -7,14 +7,30 @@ class AddGoals extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: 'ez a title'
+      title: 'ez a title',
+      currentdate:'',
+      date: ''
     };
+  }
+
+  componentDidMount() {
+    var date = new Date().getDate();
+    if(date <= 9)
+      date = '0'+date;
+    var month =  new Date().getMonth() + 1;
+    if(month <= 9)
+      month = '0'+month;
+    var year = new Date().getFullYear();
+    this.setState({
+      currentdate: year + "-" + month + "-" + date
+    });
   }
 
   onAddPress() {
 		const { goals } = this.props.data;
-		const title = this.state.title
-    this.props.createGoal({ goals, title });
+    const title = this.state.title
+    const currdate = this.state.currentdate
+    this.props.createGoal({ goals, title, currdate });
     this.props.navigation.navigate("Goals");
   }
   render() {

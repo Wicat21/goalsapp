@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {FlatList, StyleSheet, Text, ScrollView, View, TouchableOpacity, Alert} from 'react-native';
+import {StyleSheet, Text, ScrollView, View, TouchableOpacity, Alert} from 'react-native';
 import {Scene, Router, Actions} from 'react-native-router-flux';
 import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 

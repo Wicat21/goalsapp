@@ -37,11 +37,11 @@ export const formUpdate = ({ prop, value }) => {
   };
 };
 
-export const createGoal = ({ goals, title }) => {
+export const createGoal = ({ goals, title, currdate }) => {
   return dispatch => {
     dispatch({
       type: CREATE_GOAL,
-      payload: goals.concat([{ title: title, marked: false }])
+      payload: goals.concat([{ title: title, marked: false }]), onedate:currdate
     });
     dispatch(saveLocalData());
   };

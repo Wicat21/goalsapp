@@ -23,7 +23,8 @@ class Goals extends Component {
       currentdate: "",
       title: "",
       marked: "",
-      goals: []
+      goals: [],
+      onedate: []
     };
   }
 
@@ -32,9 +33,12 @@ class Goals extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
     var date = new Date().getDate();
-    var month = new Date().getMonth() + 1;
+    if(date <= 9)
+      date = '0'+date;
+    var month =  new Date().getMonth() + 1;
+    if(month <= 9)
+      month = '0'+month;
     var year = new Date().getFullYear();
     this.setState({
       currentdate: year + "-" + month + "-" + date
@@ -45,17 +49,25 @@ class Goals extends Component {
     this.props.saveLocalData()
   }*/
   
-  onEditPress(){
-    this.props.navigation.navigate("EditGoal");
+  onEditPress(yo){
+    console.log(yo)
+    this.props.navigation.navigate("EditGoal", {yo});
   }
 
   render() {
     console.log(this.props);
-    const data = this.props.data.goals;
+    const data = this.props.data.onedate.goals;
     return (
       <View>
         <View style={styles.headerStyle}>
             <Text style={styles.headerText}>Goals</Text>
+            <TouchableOpacity onPress={() =>  console.log('settings')} style={styles.buttonStyle}>
+              <Icon
+                size={30}
+                color={'white'}
+                name={'gear'}
+              />
+            </TouchableOpacity>
         </View>
         <View>
           <View style={styles.headerStyle2}>
@@ -66,10 +78,11 @@ class Goals extends Component {
           </View>
           <ScrollView>
 
-            {this.props.data.goals.map((item, i) => {
+            {this.props.data.onedate.goals.map((item, i) => {
               console.log(item);
               const markedColor = item.marked ? "green" : "red";
               const markedIcon = item.marked ? 'check' : 'minus';
+              const yo = item.title;
               return (
                 <View style={[styles.card, { borderColor: markedColor }]}>
                   <Text style={styles.titleText}>{item.title}</Text>
@@ -89,7 +102,7 @@ class Goals extends Component {
                   </TouchableOpacity>
                   <View style={styles.editDelete}>
                   <TouchableOpacity
-                    onPress={() => this.onEditPress.bind(this)}
+                    onPress={() => this.onEditPress(yo)}
                     style={{ flex: 2 }}
                   >
                     <Icon
@@ -143,6 +156,17 @@ const styles = {
     fontSize: 20,
     padding: 25,
     color: "white"
+  },
+  buttonStyle: {
+    position: 'relative',
+    backgroundColor: '#3c4f76',
+    width: 50,
+    height: 50,
+    borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 8,
+    left: -10
   },
   headerStyle2: {
     backgroundColor: "#3c4f76",

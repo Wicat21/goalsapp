@@ -6,9 +6,10 @@ import {createGoal, formUpdate, saveLocalData} from '../actions';
 class AddGoals extends Component {
   constructor(props) {
     super(props);
-    /*this.state = {
-      title: 'ez a title'
-    };*/
+  }
+
+  componentWillMount(){
+    this.props.navigation.getParam(yo, 'title');
   }
 
   onAddPress() {
@@ -25,9 +26,8 @@ class AddGoals extends Component {
         </View>
         <View stlye={styles.form}>
           <TextInput
-            placeholder={'Ide írj...'}
             textInputStyle={styles.fieldStyles}
-            value={this.props.data.goals.title}
+            value={yo}
             onChangeText={value =>
               this.setState({title: value})
             }

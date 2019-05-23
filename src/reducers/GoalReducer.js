@@ -11,7 +11,7 @@ import {
 
 const localDataExample = {
 	errorMessage:"error",
-	goals: [{ title:"Hah", marked: false}]
+	onedate:["2019-05-23", {goals: [{ title:"Hah", marked: false}]}]
 }
 
 export const data = (state = localDataExample, action) => {
@@ -38,7 +38,8 @@ export const data = (state = localDataExample, action) => {
 		case CREATE_GOAL:
 			return {
 				...state,
-				goals: action.payload
+				onedate: action.payload
+				//goals: action.payload
 			}		
 		case MARK_GOAL:
 			return {
