@@ -71,14 +71,11 @@ export const markGoal = data => {
 
 export const deleteGoal = data => {
 	return dispatch => {
-		/*remove()
-        .then(() => {*/
-            dispatch({
+      dispatch({
 				type: DELETE_GOAL,
 				data: data
 			});
 			dispatch(saveLocalData());
-        //});
 	};
 };
 

@@ -55,7 +55,7 @@ export const data = (state = localDataExample, action) => {
 		case DELETE_GOAL:
 				return {
 					...state,
-					goals: action.data
+					onedate: {...state.onedate, goals: action.data}
 				}		
 		case EDIT_GOAL:
 				return {
