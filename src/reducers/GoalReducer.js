@@ -45,14 +45,12 @@ export const data = (state = localDataExample, action) => {
 			return {
 				...state,
 				onedate: {...state.onedate, goals: action.payload}
-				//goals: action.payload
-				//onedate: action.payload
-				//data: action.payload
 			}		
 		case MARK_GOAL:
 			return {
 				...state,
-				goals: action.data
+				goals: action.payload
+				//goals: {...state.goals, goals: action.payload}
 			}		
 		case DELETE_GOAL:
 				return {

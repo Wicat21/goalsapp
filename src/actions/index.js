@@ -25,8 +25,8 @@ export const loadLocalData = () => async (dispatch, getState) => {
 };
 
 export const saveLocalData = () => async (dispatch, getState) => {
-  const goals = getState().data.goals;
-  console.log(goals);
+  const onedate = getState().data.onedate;
+  console.log(onedate);
   await AsyncStorage.setItem(`${LOCALS_STORAGE}`, JSON.stringify(data));
   dispatch({ type: SAVE_LOCAL_DATA });
 };
