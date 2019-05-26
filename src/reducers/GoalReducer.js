@@ -50,7 +50,6 @@ export const data = (state = localDataExample, action) => {
 			return {
 				...state,
 				goals: action.payload
-				//goals: {...state.goals, goals: action.payload}
 			}		
 		case DELETE_GOAL:
 				return {

@@ -35,7 +35,7 @@ const RouterComponent = () => {
 						icon={({ focused }) => (
 							<Icon
 								size={40}
-								color={focused ? 'orange' : 'blue'}								color={focused ? 'orange' : '#383f51'}
+								color={focused ? 'orange' : 'blue'}
 								name={`plus`}
 								textStyle={focused ? styles.activeLabel : styles.label}
 							/>

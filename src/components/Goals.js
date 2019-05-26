@@ -49,9 +49,8 @@ class Goals extends Component {
     this.props.saveLocalData()
   }*/
   
-  onEditPress(yo){
-    console.log(yo)
-    this.props.navigation.navigate("EditGoal", {yo});
+  onEditPress(){
+    this.props.navigation.navigate("EditGoal");
   }
 
   render() {
@@ -87,8 +86,8 @@ class Goals extends Component {
                   <Text style={styles.titleText}>{item.title}</Text>
                   <TouchableOpacity
                     onPress={() => {
-                      data[i].marked = true;
-                      console.log(data);
+                      data[i].marked = !item.marked;
+                      //console.log(data);
                       this.props.markGoal(data);
                     }}
                     style={{ flex: 1 }}
@@ -101,7 +100,7 @@ class Goals extends Component {
                   </TouchableOpacity>
                   <View style={styles.editDelete}>
                   <TouchableOpacity
-                    onPress={() => this.onEditPress(yo)}
+                    onPress={() => this.onEditPress()}
                     style={{ flex: 2 }}
                   >
                     <Icon

@@ -8,12 +8,12 @@ class AddGoals extends Component {
     super(props);
   }
 
-  componentWillMount(){
+  /*componentWillMount(){
     this.props.navigation.getParam(yo, 'title');
-  }
+  }*/
 
   onAddPress() {
-		const { goals } = this.props.data;
+		const { goals } = this.props.data.onedate;
 		const title = this.state.title
     this.props.editGoal({ goals, title });
     this.props.navigation.navigate("Goals");
@@ -27,7 +27,7 @@ class AddGoals extends Component {
         <View stlye={styles.form}>
           <TextInput
             textInputStyle={styles.fieldStyles}
-            value={yo}
+            value={this.props.data.onedate.goals.title}
             onChangeText={value =>
               this.setState({title: value})
             }
