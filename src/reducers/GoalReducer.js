@@ -2,6 +2,7 @@ import {
 	LOAD_LOCAL_DATA_SUCCESS,
 	LOAD_LOCAL_DATA_FAILURE,
 	SAVE_LOCAL_DATA, 
+  GET_DATE,
 	FORM_UPDATE,
 	CREATE_GOAL,
 	MARK_GOAL,
@@ -19,7 +20,7 @@ export const data = (state = localDataExample, action) => {
 		case LOAD_LOCAL_DATA_SUCCESS:
 			console.log("load data")
 			return {...state,
-						goals: action.goals
+						data: action.data
 		      };
 		case LOAD_LOCAL_DATA_FAILURE:
 			return {...state,
@@ -30,6 +31,11 @@ export const data = (state = localDataExample, action) => {
 			return {
 				...state
 			};
+		case GET_DATE:
+			return {
+				...state,
+				onedate: action.payload
+			}
 		case FORM_UPDATE:
 			return {
 				...state,
@@ -38,7 +44,7 @@ export const data = (state = localDataExample, action) => {
 		case CREATE_GOAL:
 			return {
 				...state,
-				onedate: action.payload
+				goals: action.payload
 				//goals: action.payload
 			}		
 		case MARK_GOAL:

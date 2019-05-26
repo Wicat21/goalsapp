@@ -12,7 +12,8 @@ import {
   loadLocalData, 
   saveLocalData, 
   markGoal, 
-  deleteGoal 
+  deleteGoal,
+  //getDate
 } from "../actions";
 import Icon from 'react-native-vector-icons/EvilIcons';
 
@@ -20,11 +21,8 @@ class Goals extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentdate: "",
-      title: "",
-      marked: "",
-      goals: [],
-      onedate: []
+      currdate: "",
+      onedate: ['', {goals:[{title:"", marked:false}]}]
     };
   }
 
@@ -41,8 +39,10 @@ class Goals extends Component {
       month = '0'+month;
     var year = new Date().getFullYear();
     this.setState({
-      currentdate: year + "-" + month + "-" + date
+      currdate: year + "-" + month + "-" + date
     });
+    //this.props.getDate(currentdate);
+    console.log(currdate);
   }
 
   /*componentWillUnmount(){
@@ -77,8 +77,7 @@ class Goals extends Component {
             </Text>
           </View>
           <ScrollView>
-
-            {this.props.data.onedate.goals.map((item, i) => {
+            {this.props.data.onedate[1].goals.map((item, i) => {
               console.log(item);
               const markedColor = item.marked ? "green" : "red";
               const markedIcon = item.marked ? 'check' : 'minus';
@@ -218,6 +217,7 @@ export default connect(
     loadLocalData,
     saveLocalData,
     markGoal,
-    deleteGoal
+    deleteGoal,
+    //getDate
   }
 )(Goals);

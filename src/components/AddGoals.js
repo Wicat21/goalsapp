@@ -27,10 +27,10 @@ class AddGoals extends Component {
   }
 
   onAddPress() {
-		const { goals } = this.props.data;
+		const { goals } = this.props.data.onedate[1];
     const title = this.state.title
     const currdate = this.state.currentdate
-    this.props.createGoal({ goals, title, currdate });
+    this.props.createGoal({ onedate, goals, title, currdate });
     this.props.navigation.navigate("Goals");
   }
   render() {
@@ -43,7 +43,7 @@ class AddGoals extends Component {
           <TextInput
             placeholder={'Ide írj...'}
             textInputStyle={styles.fieldStyles}
-            value={this.props.data.goals.title}
+            value={this.props.data.onedate[1].goals.title}
             onChangeText={value =>
               this.setState({title: value})
             }

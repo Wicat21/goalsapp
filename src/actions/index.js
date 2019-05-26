@@ -2,6 +2,7 @@ import {
   LOAD_LOCAL_DATA_SUCCESS,
   LOAD_LOCAL_DATA_FAILURE,
   SAVE_LOCAL_DATA,
+  GET_DATE,
   FORM_UPDATE,
   CREATE_GOAL,
   MARK_GOAL,
@@ -17,7 +18,7 @@ export const loadLocalData = () => async (dispatch, getState) => {
   const value = await AsyncStorage.getItem(`${LOCALS_STORAGE}`);
   if (value !== null) {
     console.log(value);
-    dispatch({ type: LOAD_LOCAL_DATA_SUCCESS, goals: JSON.parse(value) });
+    dispatch({ type: LOAD_LOCAL_DATA_SUCCESS, data: JSON.parse(value) });
   } else {
     dispatch({ type: LOAD_LOCAL_DATA_FAILURE, error: "error" });
   }
@@ -26,8 +27,18 @@ export const loadLocalData = () => async (dispatch, getState) => {
 export const saveLocalData = () => async (dispatch, getState) => {
   const goals = getState().data.goals;
   console.log(goals);
-  await AsyncStorage.setItem(`${LOCALS_STORAGE}`, JSON.stringify(goals));
+  await AsyncStorage.setItem(`${LOCALS_STORAGE}`, JSON.stringify(data));
   dispatch({ type: SAVE_LOCAL_DATA });
+};
+
+export const getDate = ({ currentdate }) => {
+  return dispatch => {
+    dispatch({
+      type: GET_DATE,
+      payload: currentdate
+    });
+    dispatch(saveLocalData());
+  };
 };
 
 export const formUpdate = ({ prop, value }) => {
@@ -37,11 +48,11 @@ export const formUpdate = ({ prop, value }) => {
   };
 };
 
-export const createGoal = ({ goals, title, currdate }) => {
+export const createGoal = ({  goals, title, currdate }) => {
   return dispatch => {
     dispatch({
       type: CREATE_GOAL,
-      payload: goals.concat([{ title: title, marked: false }]), onedate:currdate
+      payload: goals.concat([{ title: title, marked: false }]) 
     });
     dispatch(saveLocalData());
   };
