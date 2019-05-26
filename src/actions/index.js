@@ -48,11 +48,12 @@ export const formUpdate = ({ prop, value }) => {
   };
 };
 
-export const createGoal = ({  goals, title, currdate }) => {
+export const createGoal = ({ onedate, goals, title, currdate }) => {
   return dispatch => {
     dispatch({
       type: CREATE_GOAL,
       payload: goals.concat([{ title: title, marked: false }]) 
+      //this.setState({today:currdate}),
     });
     dispatch(saveLocalData());
   };
