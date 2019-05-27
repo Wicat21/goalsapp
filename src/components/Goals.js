@@ -13,7 +13,8 @@ import {
   saveLocalData, 
   markGoal, 
   deleteGoal,
-  //getDate
+  getDate,
+  newDate
 } from "../actions";
 import Icon from 'react-native-vector-icons/EvilIcons';
 
@@ -21,7 +22,7 @@ class Goals extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentdate: "",
+      currdate: "",
       onedate: {today:'', goals:[{title:"", marked:false}]}
     };
   }
@@ -38,11 +39,13 @@ class Goals extends Component {
     if(month <= 9)
       month = '0'+month;
     var year = new Date().getFullYear();
-    this.setState({
-      currentdate: year + "-" + month + "-" + date
-    });
-    //this.props.getDate(currentdate);
-    //console.log(currentdate);
+    const currentdate = year + "-" + month + "-" + date;
+    /*if (this.props.data.onedate.today != currentdate) {
+      this.props.newDate({onedate});*/
+      this.props.getDate({currentdate});
+    /*} else {
+      return this.props.data.onedate.today;
+    }*/
   }
 
   /*componentWillUnmount(){
@@ -70,9 +73,9 @@ class Goals extends Component {
         </View>
         <View>
           <View style={styles.headerStyle2}>
-            <Text style={styles.headerText2}>Célok</Text>
+            <Text style={styles.headerText2}>Your Goals</Text>
             <Text style={styles.headerText2}>
-              Mai dátum: {this.state.currentdate}
+              Today: {this.props.data.onedate.today}
             </Text>
           </View>
           <ScrollView>
@@ -217,6 +220,7 @@ export default connect(
     saveLocalData,
     markGoal,
     deleteGoal,
-    //getDate
+    getDate,
+    newDate
   }
 )(Goals);

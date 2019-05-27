@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Text, View, TextInput, StyleSheet, Button} from 'react-native';
+import { Text, View, TextInput, StyleSheet, Button, Picker} from 'react-native';
 import {connect} from 'react-redux';
 import {createGoal, formUpdate, saveLocalData} from '../actions';
 
@@ -37,22 +37,33 @@ class AddGoals extends Component {
     return (
       <View>
         <View style={styles.headerStyle}>
-            <Text style={styles.headerText}>Új cél</Text>
+            <Text style={styles.headerText}>New Goal</Text>
         </View>
         <View stlye={styles.form}>
           <TextInput
-            placeholder={'Ide írj...'}
+            style={{paddingLeft: 25}}
+            placeholder={'Write here...'}
             textInputStyle={styles.fieldStyles}
             value={this.props.data.onedate.goals.title}
             onChangeText={value =>
               this.setState({title: value})
             }
           />
+          <Picker
+            selectedValue={this.state.freq}
+            style={{height: 100, width: 120, alignSelf:'center'}}
+            onValueChange={(itemValue, itemIndex) =>
+              this.setState({freq: itemValue})
+            }>
+            <Picker.Item label="Daily" value="daily" />
+            <Picker.Item label="Weekly" value="weekly" />
+            <Picker.Item label="Monthly" value="monthly" />
+          </Picker>
         </View>
         <View style={styles.addButton}>
           <Button
             onPress={this.onAddPress.bind(this)}
-            title="Mentés"
+            title="Save"
             color="#3c4f76"
           />
         </View>
@@ -86,7 +97,8 @@ const styles = StyleSheet.create({
 		marginTop: 20,
 		marginBottom: 20,
 		marginRight: 20,
-		marginLeft: 20,
+    marginLeft: 20,
+    paddingLeft: 25
 	},
 	fieldStyles: {
 		height: 50,

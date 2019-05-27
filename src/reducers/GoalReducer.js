@@ -2,7 +2,8 @@ import {
 	LOAD_LOCAL_DATA_SUCCESS,
 	LOAD_LOCAL_DATA_FAILURE,
 	SAVE_LOCAL_DATA, 
-  GET_DATE,
+	GET_DATE,
+	NEW_DATE,
 	FORM_UPDATE,
 	CREATE_GOAL,
 	MARK_GOAL,
@@ -34,8 +35,13 @@ export const data = (state = localDataExample, action) => {
 		case GET_DATE:
 			return {
 				...state,
-				onedate: action.payload
+				onedate: {...state.onedate, today: action.payload}
 			}
+		/*case NEW_DATE:
+			return {
+				...state,
+				data: {...state.data, onedate}
+		}	*/		
 		case FORM_UPDATE:
 			return {
 				...state,

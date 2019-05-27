@@ -3,6 +3,7 @@ import {
   LOAD_LOCAL_DATA_FAILURE,
   SAVE_LOCAL_DATA,
   GET_DATE,
+  NEW_DATE,
   FORM_UPDATE,
   CREATE_GOAL,
   MARK_GOAL,
@@ -33,13 +34,21 @@ export const saveLocalData = () => async (dispatch, getState) => {
 
 export const getDate = ({ currentdate }) => {
   return dispatch => {
-    dispatch({
+    dispatch({ 
       type: GET_DATE,
       payload: currentdate
     });
-    dispatch(saveLocalData());
   };
 };
+
+/*export const newDate = ({ currentdate }) => {
+  return dispatch => {
+    dispatch({ 
+      type: NEW_DATE,
+      payload: data
+    });
+  };
+};*/
 
 export const formUpdate = ({ prop, value }) => {
   return {
@@ -52,9 +61,9 @@ export const createGoal = ({ onedate, goals, title, currdate }) => {
   return dispatch => {
     dispatch({
       type: CREATE_GOAL,
-      payload: goals.concat([{ title: title, marked: false }]) 
-      //this.setState({today:currdate}),
+      payload: goals.concat([{ title: title, marked: false }]),
     });
+    dispatch(getDate(currdate));
     dispatch(saveLocalData());
   };
 };
