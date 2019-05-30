@@ -13,7 +13,6 @@ import {
   saveLocalData, 
   markGoal, 
   deleteGoal,
-  getDate,
   newDate
 } from "../actions";
 import Icon from 'react-native-vector-icons/EvilIcons';
@@ -23,7 +22,9 @@ class Goals extends Component {
     super(props);
     this.state = {
       currdate: "",
-      onedate: {today:'', goals:[{title:"", marked:false}]}
+      onedate: [{today:'', goals: [{title:"", marked:false}]}],
+      weekly: [{monday:'', goals: [{ title:"", marked: false}]}],
+      monthly: [{first:'', goals: [{ title:"", marked: false}]}]
     };
   }
 
@@ -40,12 +41,12 @@ class Goals extends Component {
       month = '0'+month;
     var year = new Date().getFullYear();
     const currentdate = year + "-" + month + "-" + date;
-    /*if (this.props.data.onedate.today != currentdate) {
-      this.props.newDate({onedate});*/
-      this.props.getDate({currentdate});
-    /*} else {
-      return this.props.data.onedate.today;
-    }*/
+    const onedate = this.props.data.onedate
+    const last = this.props.data.onedate[onedate.length - 1];
+    const goalCopy = this.props.data.onedate[onedate.length - 1].goals.slice();
+    if (last.today != currentdate) { 
+      this.props.newDate({onedate, currentdate, goalCopy});
+    } 
   }
 
   /*componentWillUnmount(){
@@ -58,7 +59,7 @@ class Goals extends Component {
 
   render() {
     console.log(this.props);
-    const data = this.props.data.onedate.goals;
+    const data = this.props.data.onedate[0].goals;
     return (
       <View>
         <View style={styles.headerStyle}>
@@ -71,15 +72,25 @@ class Goals extends Component {
               />
             </TouchableOpacity>
         </View>
-        <View>
+        <ScrollView>
           <View style={styles.headerStyle2}>
-            <Text style={styles.headerText2}>Your Goals</Text>
-            <Text style={styles.headerText2}>
-              Today: {this.props.data.onedate.today}
+            <View style={styles.freq}>
+              <TouchableOpacity onPress={() =>  console.log('daily')} style={styles.freqButton}>
+                <Text style={styles.headerText2}>Daily</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() =>  console.log('weekly')} style={styles.freqButton}>
+                <Text style={styles.headerText2}>Weekly</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() =>  console.log('monthly')} style={styles.freqButton}>
+                <Text style={styles.headerText2}>Monthly</Text>
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.today}>
+              {this.props.currentdate}
             </Text>
           </View>
-          <ScrollView>
-            {this.props.data.onedate.goals.map((item, i) => {
+          <View>
+            {this.props.data.onedate[0].goals.map((item, i) => {
               console.log(item);
               const markedColor = item.marked ? "green" : "red";
               const markedIcon = item.marked ? 'check' : 'minus';
@@ -90,7 +101,6 @@ class Goals extends Component {
                   <TouchableOpacity
                     onPress={() => {
                       data[i].marked = !item.marked;
-                      //console.log(data);
                       this.props.markGoal(data);
                     }}
                     style={{ flex: 1 }}
@@ -130,9 +140,8 @@ class Goals extends Component {
                 </View>
               );
             })}
-
-          </ScrollView>
-        </View>
+          </View>
+        </ScrollView>
       </View>
     );
   }
@@ -183,14 +192,33 @@ const styles = {
     alignItems: "center"
   },
   headerText2: {
-    fontSize: 15,
-    padding: 25,
+    fontSize: 12,
     color: "white"
   },
+  freq: {
+    paddingLeft: 25,
+    paddingRight: 25,
+    flex:2,
+    justifyContent: 'space-between',
+    flexDirection: 'row'
+  },
+  freqButton: {
+    borderColor: 'white',
+    borderWidth: 1,
+    borderRadius: 5,
+    padding: 5
+  },
+  today: {
+    paddingRight: 25,
+    flex:1,
+    fontSize: 15,
+    color: "white",
+    flexDirection: 'row'
+  },  
   card: {
-    marginTop: 20,
     marginLeft: 20,
     marginRight: 20,
+    marginTop: 20,
     flexDirection: "row",
     borderWidth: 1,
     borderColor: "blue",
@@ -220,7 +248,6 @@ export default connect(
     saveLocalData,
     markGoal,
     deleteGoal,
-    getDate,
     newDate
   }
 )(Goals);

@@ -13,7 +13,7 @@ class AddGoals extends Component {
     };
   }
 
-  componentDidMount() {
+  /*componentDidMount() {
     var date = new Date().getDate();
     if(date <= 9)
       date = '0'+date;
@@ -24,13 +24,13 @@ class AddGoals extends Component {
     this.setState({
       currentdate: year + "-" + month + "-" + date
     });
-  }
+  }*/
 
   onAddPress() {
-		const { goals } = this.props.data.onedate;
-    const title = this.state.title
-    const currdate = this.state.currentdate
-    this.props.createGoal({ goals, title, currdate });
+    const title = this.state.title;
+    const last = this.props.data.onedate[onedate.length - 1];
+    const lastGoal = this.props.data.onedate[onedate.length - 1].goals;
+    this.props.createGoal({ lastGoal, title, last});
     this.props.navigation.navigate("Goals");
   }
   render() {
@@ -44,7 +44,7 @@ class AddGoals extends Component {
             style={{paddingLeft: 25}}
             placeholder={'Write here...'}
             textInputStyle={styles.fieldStyles}
-            value={this.props.data.onedate.goals.title}
+            value={lastGoal.title}
             onChangeText={value =>
               this.setState({title: value})
             }
