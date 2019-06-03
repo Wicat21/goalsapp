@@ -47,8 +47,18 @@ export const data = (state = localDataExample, action) => {
 		case CREATE_GOAL:
 			return {
 				...state,
-				//lastGoal: action.payload
-				last: {...state.last, lastGoal: action.payload}
+				//onedate: [...state.last, {goals:action.payload}]
+				//onedate: [...state.onedate, {onedate[onedate.length - 1].goals:action.payload}]
+				onedate: [...state.onedate, {goals:action.payload}]
+				//onedate: [...state.onedate, goals:action.payload]
+				//onedate: [...state.onedate[onedate.length - 1], goals:action.payload]
+				
+				
+				
+				
+				//onedate: {...state.onedate[onedate.length - 1], goals:action.payload}
+				//goals: action.payload
+				//goals: {...state.last, lastGoal: action.payload}
 			}		
 		case MARK_GOAL:
 			return {

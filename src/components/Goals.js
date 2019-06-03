@@ -21,7 +21,7 @@ class Goals extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currdate: "",
+      currentdate: "",
       onedate: [{today:'', goals: [{title:"", marked:false}]}],
       weekly: [{monday:'', goals: [{ title:"", marked: false}]}],
       monthly: [{first:'', goals: [{ title:"", marked: false}]}]
@@ -29,10 +29,26 @@ class Goals extends Component {
   }
 
   componentWillMount() {
+    var date = new Date().getDate();
+    if(date <= 9)
+      date = '0'+date;
+    var month =  new Date().getMonth() + 1;
+    if(month <= 9)
+      month = '0'+month;
+    var year = new Date().getFullYear();
+    const currentdate = year + "-" + month + "-" + date;
+    const onedate = this.props.data.onedate
+    const last = this.props.data.onedate[onedate.length - 1];
+    const goalCopy = this.props.data.onedate[onedate.length - 1].goals.slice();
+    
     this.props.loadLocalData();
+
+    if (last.today != currentdate) { 
+      this.props.newDate({onedate, currentdate, goalCopy});
+    } 
   }
 
-  componentDidMount() {
+  /*componentDidMount() {
     var date = new Date().getDate();
     if(date <= 9)
       date = '0'+date;
@@ -47,7 +63,7 @@ class Goals extends Component {
     if (last.today != currentdate) { 
       this.props.newDate({onedate, currentdate, goalCopy});
     } 
-  }
+  }*/
 
   /*componentWillUnmount(){
     this.props.saveLocalData()
@@ -86,7 +102,7 @@ class Goals extends Component {
               </TouchableOpacity>
             </View>
             <Text style={styles.today}>
-              {this.props.currentdate}
+              Today: {this.props.currentdate}
             </Text>
           </View>
           <View>
@@ -211,7 +227,7 @@ const styles = {
   today: {
     paddingRight: 25,
     flex:1,
-    fontSize: 15,
+    fontSize: 10,
     color: "white",
     flexDirection: 'row'
   },  

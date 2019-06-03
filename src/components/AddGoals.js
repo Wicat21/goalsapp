@@ -7,29 +7,17 @@ class AddGoals extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: 'ez a title',
+      title: '',
       currentdate:'',
       date: ''
     };
   }
 
-  /*componentDidMount() {
-    var date = new Date().getDate();
-    if(date <= 9)
-      date = '0'+date;
-    var month =  new Date().getMonth() + 1;
-    if(month <= 9)
-      month = '0'+month;
-    var year = new Date().getFullYear();
-    this.setState({
-      currentdate: year + "-" + month + "-" + date
-    });
-  }*/
-
   onAddPress() {
     const title = this.state.title;
+    const onedate = this.props.data.onedate;
     const last = this.props.data.onedate[onedate.length - 1];
-    const lastGoal = this.props.data.onedate[onedate.length - 1].goals;
+    const lastGoal = last.goals;
     this.props.createGoal({ lastGoal, title, last});
     this.props.navigation.navigate("Goals");
   }
@@ -44,7 +32,7 @@ class AddGoals extends Component {
             style={{paddingLeft: 25}}
             placeholder={'Write here...'}
             textInputStyle={styles.fieldStyles}
-            value={lastGoal.title}
+            value={this.state.title}
             onChangeText={value =>
               this.setState({title: value})
             }
