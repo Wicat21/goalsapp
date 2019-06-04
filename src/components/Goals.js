@@ -38,11 +38,11 @@ class Goals extends Component {
     var year = new Date().getFullYear();
     const currentdate = year + "-" + month + "-" + date;
     const onedate = this.props.data.onedate
-    const last = this.props.data.onedate[onedate.length - 1];
-    const goalCopy = this.props.data.onedate[onedate.length - 1].goals.slice();
+    const last = this.props.data.onedate[Object.keys(onedate).length-1];
+    const goalCopy = this.props.data.onedate[Object.keys(onedate).length-1].goals.slice();
     
     this.props.loadLocalData();
-
+    
     if (last.today != currentdate) { 
       this.props.newDate({onedate, currentdate, goalCopy});
     } 
@@ -75,7 +75,7 @@ class Goals extends Component {
 
   render() {
     console.log(this.props);
-    const data = this.props.data.onedate[0].goals;
+    const data = this.props.data.onedate['0'].goals;
     return (
       <View>
         <View style={styles.headerStyle}>
@@ -106,7 +106,7 @@ class Goals extends Component {
             </Text>
           </View>
           <View>
-            {this.props.data.onedate[0].goals.map((item, i) => {
+            {this.props.data.onedate['0'].goals.map((item, i) => {
               console.log(item);
               const markedColor = item.marked ? "green" : "red";
               const markedIcon = item.marked ? 'check' : 'minus';

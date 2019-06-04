@@ -13,7 +13,7 @@ import {
 
 const localDataExample = {
 	errorMessage:"error",
-	onedate:[{today:"2019-05-23", goals: [{ title:"Napi cél", marked: false}]}],
+	onedate:{'0':{id:0, today:"2019-05-23", goals: [{ title:"Napi cél", marked: false}]}},
 	weekly:[{monday:"2019-05-27", goals: [{ title:"Heti cél", marked: false}]}],
 	monthly:[{first:"2019-05-01", goals: [{ title:"Havi cél", marked: false}]}]
 }
@@ -37,7 +37,8 @@ export const data = (state = localDataExample, action) => {
 		case NEW_DATE:
 			return {
 				...state,
-				onedate: action.payload
+				onedate: {...state.onedate, '1':action.payload}
+				//onedate: onedate[onedate.length] = action.payload
 		}	
 		case FORM_UPDATE:
 			return {
@@ -49,14 +50,13 @@ export const data = (state = localDataExample, action) => {
 				...state,
 				//onedate: [...state.last, {goals:action.payload}]
 				//onedate: [...state.onedate, {onedate[onedate.length - 1].goals:action.payload}]
-				onedate: [...state.onedate, {goals:action.payload}]
+				//onedate: [...state.onedate, {goals:action.payload}]
 				//onedate: [...state.onedate, goals:action.payload]
 				//onedate: [...state.onedate[onedate.length - 1], goals:action.payload]
-				
-				
-				
-				
-				//onedate: {...state.onedate[onedate.length - 1], goals:action.payload}
+				//onedate['1']: {goals:action.payload}
+				//onedate: {...state.onedate, '1':{...state.today, goals:[...state.goals, {title:action.title, marked:false}]}}
+				//onedate: {...state.onedate, goals:action.payload}
+				onedate: {...state.onedate, '1':{...state.onedate['1'], goals:action.payload}}
 				//goals: action.payload
 				//goals: {...state.last, lastGoal: action.payload}
 			}		

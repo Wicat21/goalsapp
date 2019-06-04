@@ -32,11 +32,11 @@ export const saveLocalData = () => async (dispatch, getState) => {
   dispatch({ type: SAVE_LOCAL_DATA });
 };
 
-export const newDate = ({onedate, currentdate, goalCopy}) => {
+export const newDate = ({ currentdate, goalCopy, onedate}) => {
   return dispatch => {
     dispatch({ 
       type: NEW_DATE,
-      payload: onedate.concat([{today:currentdate, goals:goalCopy }])
+      payload: onedate[onedate.length]={id:1, today:currentdate, goals:goalCopy }
     });
     dispatch(saveLocalData());
   };
@@ -53,7 +53,7 @@ export const createGoal = ({ lastGoal, title }) => {
   return dispatch => {
     dispatch({
       type: CREATE_GOAL,
-      payload: lastGoal.concat([{ title: title, marked: false }]),
+      payload:lastGoal.concat([{ title: title, marked: false }]),
     });
     dispatch(saveLocalData());
   };
