@@ -12,6 +12,8 @@ import {
 } from "./constants";
 
 import AsyncStorage from "@react-native-community/async-storage";
+import _ from 'lodash';
+import { statement } from "@babel/template";
 
 const LOCALS_STORAGE = "@goals:locals";
 
@@ -32,11 +34,25 @@ export const saveLocalData = () => async (dispatch, getState) => {
   dispatch({ type: SAVE_LOCAL_DATA });
 };
 
-export const newDate = ({ currentdate, goalCopy, onedate}) => {
+export const newDate = ({ currentdate, goalCopy, onedate}) => (dispatch, getState)=> {
+  const onedate = getState().data.onedate;
+  //const onedate = this.props.data.onedate;
+  let idx = Object.keys(onedate).length;
+  var newdate = {[idx]:{id:idx, today:currentdate, goals:goalCopy}};
+  _.merge(onedate, newdate);
+  //onedate = {...onedate, ...newdate};
+  //let newdate = Object.assign(onedate, [{id:idx, today:currentdate, goals:goalCopy}]);
+  //let newdate = {...onedate, [{id:idx, today:currentdate, goals:goalCopy}]};
+  //let newdate = {onedate[idx] = [{id:idx, today:currentdate, goals:goalCopy}]};
+  //let newdate = onedate.push([{id:idx, today:currentdate, goals:goalCopy}]);
+  //let onedated = Object.assign({onedate}, [{id:idx, today:currentdate, goals:goalCopy}]);
   return dispatch => {
     dispatch({ 
       type: NEW_DATE,
-      payload: onedate[onedate.length]={id:1, today:currentdate, goals:goalCopy }
+      payload: onedate
+      //[{id:idx, today:currentdate, goals:goalCopy}]
+      //onedate[idx] = [{id:idx, today:currentdate, goals:goalCopy}]
+      //onedate.push([{id:idx, today:currentdate, goals:goalCopy}])
     });
     dispatch(saveLocalData());
   };

@@ -36,16 +36,16 @@ export const data = (state = localDataExample, action) => {
 			};
 		case NEW_DATE:
 			return {
-				...state,
-				onedate: {...state.onedate, '1':action.payload}
-				//onedate: onedate[onedate.length] = action.payload
-		}	
+					...state,
+					onedate: action.payload
+			}	
 		case FORM_UPDATE:
 			return {
 				...state,
 				[action.payload.prop]:action.payload.value
 			}
 		case CREATE_GOAL:
+			let idy = Object.keys(onedate).length-1;	
 			return {
 				...state,
 				//onedate: [...state.last, {goals:action.payload}]
@@ -56,7 +56,7 @@ export const data = (state = localDataExample, action) => {
 				//onedate['1']: {goals:action.payload}
 				//onedate: {...state.onedate, '1':{...state.today, goals:[...state.goals, {title:action.title, marked:false}]}}
 				//onedate: {...state.onedate, goals:action.payload}
-				onedate: {...state.onedate, '1':{...state.onedate['1'], goals:action.payload}}
+				onedate: {...state.onedate, idx:{...state.onedate[idy], goals:action.payload}}
 				//goals: action.payload
 				//goals: {...state.last, lastGoal: action.payload}
 			}		
