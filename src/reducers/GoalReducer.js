@@ -47,10 +47,6 @@ export const data = (state = localDataExample, action) => {
 		case CREATE_GOAL:	
 			return {
 				...state,
-				//onedate['1']: {goals:action.payload}
-				//onedate: {...state.onedate, '1':{...state.today, goals:[...state.goals, {title:action.title, marked:false}]}}
-				//onedate: {...state.onedate, goals:action.payload}
-				//onedate: action.payload
 				onedate: action.payload
 			}		
 		case MARK_GOAL:
@@ -61,7 +57,7 @@ export const data = (state = localDataExample, action) => {
 		case DELETE_GOAL:
 				return {
 					...state,
-					onedate: {...state.onedate, goals: action.data}
+					goals: action.data
 				}		
 		case EDIT_GOAL:
 				return {

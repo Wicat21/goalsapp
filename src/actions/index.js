@@ -79,7 +79,7 @@ export const markGoal = data => {
 };
 
 export const deleteGoal = data => {
-	return dispatch => {
+  return dispatch => {
       dispatch({
 				type: DELETE_GOAL,
 				data: data
