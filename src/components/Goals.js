@@ -22,6 +22,8 @@ class Goals extends Component {
     super(props);
     this.state = {
       currentdate: "",
+      show: 'daily',
+      data: [],
       onedate: [{today:'', goals: [{title:"", marked:false}]}],
       weekly: [{monday:'', goals: [{ title:"", marked: false}]}],
       monthly: [{first:'', goals: [{ title:"", marked: false}]}]
@@ -57,13 +59,18 @@ class Goals extends Component {
   }
 
   render() {
-    console.log(this.props);
     const onedate = this.props.data.onedate;
-    //var idx = 0;
+    const weekly = this.props.data.weekly;
+    const monthly = this.props.data.monthly;
     var idx = Object.keys(onedate).length-1;
-    //var idx = Object.keys(onedate).length-2;
-    console.log(Object.keys(onedate).length-2); //onedate.undefined miatt kell
-    const data = this.props.data.onedate[idx].goals;
+    var idw = Object.keys(weekly).length-1;
+    var idm = Object.keys(monthly).length-1;
+    console.log(Object.keys(onedate).length-1);
+    console.log(this.state.data);
+    const ddata = this.props.data.onedate[idx].goals;
+    const wdata = this.props.data.weekly[idw].goals;
+    const mdata = this.props.data.monthly[idm].goals;
+    const data = ddata;
     return (
       <View>
         <View style={styles.headerStyle}>
@@ -79,13 +86,13 @@ class Goals extends Component {
         <ScrollView>
           <View style={styles.headerStyle2}>
             <View style={styles.freq}>
-              <TouchableOpacity onPress={() =>  console.log('daily')} style={styles.freqButton}>
+              <TouchableOpacity onPress={() =>  this.setState({data: ddata})} style={styles.freqButton}>
                 <Text style={styles.headerText2}>Daily</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() =>  console.log('weekly')} style={styles.freqButton}>
+              <TouchableOpacity onPress={() =>  this.setState({data: wdata})} style={styles.freqButton}>
                 <Text style={styles.headerText2}>Weekly</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() =>  console.log('monthly')} style={styles.freqButton}>
+              <TouchableOpacity onPress={() =>  this.setState({data: mdata})} style={styles.freqButton}>
                 <Text style={styles.headerText2}>Monthly</Text>
               </TouchableOpacity>
             </View>
@@ -94,7 +101,7 @@ class Goals extends Component {
             </Text>
           </View>
           <View>
-            {this.props.data.onedate[idx].goals.map((item, i) => {
+            {data.map((item, i) => {
               console.log(item);
               const markedColor = item.marked ? "green" : "red";
               const markedIcon = item.marked ? 'check' : 'minus';
