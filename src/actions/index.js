@@ -36,23 +36,13 @@ export const saveLocalData = () => async (dispatch, getState) => {
 
 export const newDate = ({ currentdate, goalCopy, onedate}) => (dispatch, getState)=> {
   const onedate = getState().data.onedate;
-  //const onedate = this.props.data.onedate;
   let idx = Object.keys(onedate).length;
   var newdate = {[idx]:{id:idx, today:currentdate, goals:goalCopy}};
   _.merge(onedate, newdate);
-  //onedate = {...onedate, ...newdate};
-  //let newdate = Object.assign(onedate, [{id:idx, today:currentdate, goals:goalCopy}]);
-  //let newdate = {...onedate, [{id:idx, today:currentdate, goals:goalCopy}]};
-  //let newdate = {onedate[idx] = [{id:idx, today:currentdate, goals:goalCopy}]};
-  //let newdate = onedate.push([{id:idx, today:currentdate, goals:goalCopy}]);
-  //let onedated = Object.assign({onedate}, [{id:idx, today:currentdate, goals:goalCopy}]);
   return dispatch => {
     dispatch({ 
       type: NEW_DATE,
       payload: onedate
-      //[{id:idx, today:currentdate, goals:goalCopy}]
-      //onedate[idx] = [{id:idx, today:currentdate, goals:goalCopy}]
-      //onedate.push([{id:idx, today:currentdate, goals:goalCopy}])
     });
     dispatch(saveLocalData());
   };
@@ -65,11 +55,14 @@ export const formUpdate = ({ prop, value }) => {
   };
 };
 
-export const createGoal = ({ lastGoal, title }) => {
+export const createGoal = ({ lastGoal, title, onedate }) => {
+  let now = Object.keys(onedate).length-1;
+  var update = onedate[now].goals.push({ title: title, marked: false });
+  _.merge(onedate, update);
   return dispatch => {
     dispatch({
       type: CREATE_GOAL,
-      payload:lastGoal.concat([{ title: title, marked: false }]),
+      payload:onedate
     });
     dispatch(saveLocalData());
   };

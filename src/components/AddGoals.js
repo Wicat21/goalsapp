@@ -16,9 +16,10 @@ class AddGoals extends Component {
   onAddPress() {
     const title = this.state.title;
     const onedate = this.props.data.onedate;
-    const last = this.props.data.onedate['1'];
+    var idx = Object.keys(onedate).length-1;
+    const last = this.props.data.onedate[idx];
     const lastGoal = last.goals;
-    this.props.createGoal({ lastGoal, title});
+    this.props.createGoal({ lastGoal, title, onedate});
     this.props.navigation.navigate("Goals");
   }
   render() {

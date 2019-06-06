@@ -59,8 +59,8 @@ class Goals extends Component {
   render() {
     console.log(this.props);
     const onedate = this.props.data.onedate;
-    var idx = 0;
-    //var idx = Object.keys(onedate).length-1;
+    //var idx = 0;
+    var idx = Object.keys(onedate).length-1;
     //var idx = Object.keys(onedate).length-2;
     console.log(Object.keys(onedate).length-2); //onedate.undefined miatt kell
     const data = this.props.data.onedate[idx].goals;

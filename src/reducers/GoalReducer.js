@@ -44,21 +44,14 @@ export const data = (state = localDataExample, action) => {
 				...state,
 				[action.payload.prop]:action.payload.value
 			}
-		case CREATE_GOAL:
-			let idy = Object.keys(onedate).length-1;	
+		case CREATE_GOAL:	
 			return {
 				...state,
-				//onedate: [...state.last, {goals:action.payload}]
-				//onedate: [...state.onedate, {onedate[onedate.length - 1].goals:action.payload}]
-				//onedate: [...state.onedate, {goals:action.payload}]
-				//onedate: [...state.onedate, goals:action.payload]
-				//onedate: [...state.onedate[onedate.length - 1], goals:action.payload]
 				//onedate['1']: {goals:action.payload}
 				//onedate: {...state.onedate, '1':{...state.today, goals:[...state.goals, {title:action.title, marked:false}]}}
 				//onedate: {...state.onedate, goals:action.payload}
-				onedate: {...state.onedate, idx:{...state.onedate[idy], goals:action.payload}}
-				//goals: action.payload
-				//goals: {...state.last, lastGoal: action.payload}
+				//onedate: action.payload
+				onedate: action.payload
 			}		
 		case MARK_GOAL:
 			return {
