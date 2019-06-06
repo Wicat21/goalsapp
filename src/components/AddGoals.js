@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Text, View, TextInput, StyleSheet, Button, Picker} from 'react-native';
 import {connect} from 'react-redux';
-import {createGoal, formUpdate, saveLocalData} from '../actions';
+import {createGoal, createWeek, createMonth, formUpdate, saveLocalData} from '../actions';
 
 class AddGoals extends Component {
   constructor(props) {
@@ -9,18 +9,31 @@ class AddGoals extends Component {
     this.state = {
       title: '',
       currentdate:'',
-      date: ''
+      date: '',
+      freq: 'daily'
     };
   }
 
   onAddPress() {
     const title = this.state.title;
     const onedate = this.props.data.onedate;
-    var idx = Object.keys(onedate).length-1;
-    const last = this.props.data.onedate[idx];
-    const lastGoal = last.goals;
-    this.props.createGoal({ lastGoal, title, onedate});
-    this.props.navigation.navigate("Goals");
+    const weekly = this.props.data.weekly;
+    const monthly = this.props.data.monthly;
+    if (this.state.freq =='daily') {
+      console.log('daily');
+      this.props.createGoal({ title, onedate});
+      this.props.navigation.navigate("Goals");
+    } if (this.state.freq =='weekly') {
+      console.log('weekly');
+      this.props.createWeek({ title, weekly});
+      this.props.navigation.navigate("Goals");
+    } if (this.state.freq =='monthly') {
+      console.log('monthly');
+      this.props.createMonth({ title, monthly});
+      this.props.navigation.navigate("Goals");
+    } else {
+      this.props.navigation.navigate("Goals");
+    }
   }
   render() {
     return (
@@ -103,6 +116,8 @@ export default connect(
   ({ data }) => ({ data }),
   {
     createGoal,
+    createWeek,
+    createMonth,
 		formUpdate,
 		saveLocalData
   },

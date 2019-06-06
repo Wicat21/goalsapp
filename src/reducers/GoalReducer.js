@@ -6,6 +6,8 @@ import {
 	NEW_DATE,
 	FORM_UPDATE,
 	CREATE_GOAL,
+	CREATE_WEEK,
+	CREATE_MONTH,
 	MARK_GOAL,
 	DELETE_GOAL,
 	EDIT_GOAL
@@ -14,8 +16,8 @@ import {
 const localDataExample = {
 	errorMessage:"error",
 	onedate:{'0':{id:0, today:"2019-05-23", goals: [{ title:"Napi cél", marked: false}]}},
-	weekly:[{monday:"2019-05-27", goals: [{ title:"Heti cél", marked: false}]}],
-	monthly:[{first:"2019-05-01", goals: [{ title:"Havi cél", marked: false}]}]
+	weekly:{'0':{monday:"2019-05-27", goals: [{ title:"Heti cél", marked: false}]}},
+	monthly:{'0':{first:"2019-05-01", goals: [{ title:"Havi cél", marked: false}]}}
 }
 
 export const data = (state = localDataExample, action) => {
@@ -48,7 +50,17 @@ export const data = (state = localDataExample, action) => {
 			return {
 				...state,
 				onedate: action.payload
-			}		
+			}	
+		case CREATE_WEEK:	
+			return {
+				...state,
+				weekly: action.payload
+			}	
+		case CREATE_MONTH:	
+			return {
+				...state,
+				monthly: action.payload
+			}				
 		case MARK_GOAL:
 			return {
 				...state,

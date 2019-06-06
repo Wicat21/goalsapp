@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import { Text, View, TextInput, StyleSheet, Button} from 'react-native';
 import {connect} from 'react-redux';
-import {createGoal, formUpdate, saveLocalData} from '../actions';
+import {createGoal, formUpdate, saveLocalData, editGoal} from '../actions';
 
-class AddGoals extends Component {
+class EditGoal extends Component {
   constructor(props) {
     super(props);
   }
@@ -13,9 +13,12 @@ class AddGoals extends Component {
   }*/
 
   onAddPress() {
-		const { goals } = this.props.data.onedate;
-		const title = this.state.title
-    this.props.editGoal({ goals, title });
+		const title = this.state.title;
+    const onedate = this.props.data.onedate;
+    var idx = Object.keys(onedate).length-1;
+    const last = this.props.data.onedate[idx];
+    const lastGoal = last.goals;
+    this.props.editGoal({ lastGoal, title, onedate});
     this.props.navigation.navigate("Goals");
   }
   render() {
@@ -27,11 +30,21 @@ class AddGoals extends Component {
         <View stlye={styles.form}>
           <TextInput
             textInputStyle={styles.fieldStyles}
-            value={this.props.data.onedate.goals.title}
+            value={this.state.title}
             onChangeText={value =>
               this.setState({title: value})
             }
           />
+          <Picker
+            selectedValue={this.state.freq}
+            style={{height: 100, width: 120, alignSelf:'center'}}
+            onValueChange={(itemValue, itemIndex) =>
+              this.setState({freq: itemValue})
+            }>
+            <Picker.Item label="Daily" value="daily" />
+            <Picker.Item label="Weekly" value="weekly" />
+            <Picker.Item label="Monthly" value="monthly" />
+          </Picker>
         </View>
         <View style={styles.addButton}>
           <Button
@@ -87,6 +100,7 @@ export default connect(
   {
     createGoal,
 		formUpdate,
-		saveLocalData
+		saveLocalData,
+    editGoal
   },
-)(AddGoals);
+)(EditGoal);

@@ -117,7 +117,7 @@ class Goals extends Component {
                   </TouchableOpacity>
                   <View style={styles.editDelete}>
                   <TouchableOpacity
-                    onPress={() => this.onEditPress()}
+                    onPress={() => this.onEditPress(this.props.navigation.navigate("EditGoal"))}
                     style={{ flex: 2 }}
                   >
                     <Icon

@@ -6,6 +6,8 @@ import {
   NEW_DATE,
   FORM_UPDATE,
   CREATE_GOAL,
+ 	CREATE_WEEK,
+	CREATE_MONTH, 
   MARK_GOAL,
   DELETE_GOAL,
   EDIT_GOAL
@@ -55,7 +57,7 @@ export const formUpdate = ({ prop, value }) => {
   };
 };
 
-export const createGoal = ({ lastGoal, title, onedate }) => {
+export const createGoal = ({ title, onedate }) => {
   let now = Object.keys(onedate).length-1;
   var update = onedate[now].goals.push({ title: title, marked: false });
   _.merge(onedate, update);
@@ -63,6 +65,32 @@ export const createGoal = ({ lastGoal, title, onedate }) => {
     dispatch({
       type: CREATE_GOAL,
       payload:onedate
+    });
+    dispatch(saveLocalData());
+  };
+};
+
+export const createWeek = ({ title, weekly }) => {
+  let now = Object.keys(weekly).length-1;
+  var updateweek = weekly[now].goals.push({ title: title, marked: false });
+  _.merge(weekly, updateweek);
+  return dispatch => {
+    dispatch({
+      type: CREATE_WEEK,
+      payload:weekly
+    });
+    dispatch(saveLocalData());
+  };
+};
+
+export const createMonth = ({ title, monthly }) => {
+  let now = Object.keys(monthly).length-1;
+  var updatemonth = monthly[now].goals.push({ title: title, marked: false });
+  _.merge(monthly, updatemonth);
+  return dispatch => {
+    dispatch({
+      type: CREATE_MONTH,
+      payload: monthly
     });
     dispatch(saveLocalData());
   };
@@ -92,7 +120,7 @@ export const editGoal = data => {
   return dispatch => {
     dispatch({
       type: EDIT_GOAL,
-      title: newtitle
+      data: data
     });
     dispatch(saveLocalData());
   };
