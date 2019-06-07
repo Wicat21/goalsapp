@@ -7,7 +7,24 @@ const nem = { key: "nem", color: "red" };
 const igen = { key: "igen", color: "green" };
 
 class CalendarScene extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      onedate: [{today:'', goals: [{title:"", marked:false}]}],
+      weekly: [{monday:'', goals: [{ title:"", marked: false}]}],
+      monthly: [{first:'', goals: [{ title:"", marked: false}]}]
+    };
+  }
   render(){
+    /*const onedate = this.props.data.onedate;
+    /*onedate[i].today: {dots: [markedall=true? igen : nem]} 
+    if (onedate[i].goals)
+    onedate[i].goals */
+    var markarray = [{marked:true}, {marked:false}]
+    function markedall(currmarked) {
+      return currmarked = true;
+    }
+    console.log(markarray.every(markedall))
     return(
       <View>
         <View>
@@ -16,8 +33,8 @@ class CalendarScene extends Component {
           </View>
           <Calendar
             markedDates={{
-              "2019-05-22": { dots: [igen] },
-              "2019-05-23": { dots: [nem] }
+              "2019-06-01": { dots: [igen] },
+              "2019-06-02": { dots: [nem] }
             }}
             markingType={"multi-dot"}
           />

@@ -4,6 +4,8 @@ import {
   SAVE_LOCAL_DATA,
   GET_DATE,
   NEW_DATE,
+  NEW_WEEK,
+  NEW_MONTH,
   FORM_UPDATE,
   CREATE_GOAL,
  	CREATE_WEEK,
@@ -45,6 +47,34 @@ export const newDate = ({ currentdate, goalCopy, onedate}) => (dispatch, getStat
     dispatch({ 
       type: NEW_DATE,
       payload: onedate
+    });
+    dispatch(saveLocalData());
+  };
+};
+
+export const newWeek = ({ currentdate, weekCopy, weekly}) => (dispatch, getState)=> {
+  const weekly = getState().data.weekly;
+  let idw = Object.keys(weekly).length;
+  var newweek = {[idw]:{id:idw, today:currentdate, goals:weekCopy}};
+  _.merge(weekly, newweek);
+  return dispatch => {
+    dispatch({ 
+      type: NEW_DATE,
+      payload: weekly
+    });
+    dispatch(saveLocalData());
+  };
+};
+
+export const newMonth = ({ currentdate, monthCopy, monthly}) => (dispatch, getState)=> {
+  const monthly = getState().data.monthly;
+  let idm = Object.keys(monthly).length;
+  var newmonth = {[idm]:{id:idm, first:currentdate, goals:monthCopy}};
+  _.merge(monthly, newmonth);
+  return dispatch => {
+    dispatch({ 
+      type: NEW_MONTH,
+      payload: monthly
     });
     dispatch(saveLocalData());
   };

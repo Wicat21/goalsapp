@@ -13,7 +13,9 @@ import {
   saveLocalData, 
   markGoal, 
   deleteGoal,
-  newDate
+  newDate,
+  newWeek,
+  newMonth
 } from "../actions";
 import Icon from 'react-native-vector-icons/EvilIcons';
 
@@ -30,6 +32,12 @@ class Goals extends Component {
     };
   }
   
+  getWeekDay(){
+    var weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    var day = new Date().getDay();
+    return weekday = weekdays[day];
+  }
+
   componentWillMount() {
     var date = new Date().getDate();
     if(date <= 9)
@@ -39,15 +47,32 @@ class Goals extends Component {
       month = '0'+month;
     var year = new Date().getFullYear();
     const currentdate = year + "-" + month + "-" + date;
-    const onedate = this.props.data.onedate
+    const onedate = this.props.data.onedate;
     const last = this.props.data.onedate[Object.keys(onedate).length-1];
     const goalCopy = this.props.data.onedate[Object.keys(onedate).length-1].goals.slice();
+    
+    this.getWeekDay();
+    console.log(weekday)
+    const weekly = this.props.data.weekly;
+    const weekCopy = this.props.data.weekly[Object.keys(onedate).length-1].goals.slice();
+    
+    const currentmonth = year + "-" + month;
+    const monthly = this.props.data.monthly;
+    const monthCopy = this.props.data.monthly[Object.keys(onedate).length-1].goals.slice();
+    const monthnow = this.props.data.monthly[Object.keys(onedate).length-1].first;
+    const lastmonth = monthnow.substring(0,7);
     
     this.props.loadLocalData();
     
     if (last.today != currentdate) { 
       this.props.newDate({onedate, currentdate, goalCopy});
     } 
+    if (weekday == "Monday") {
+      this.props.newWeek({weekly, currentdate, weekCopy});
+    }
+    if (lastmonth != currentmonth) {
+      this.props.newMonth({monthly, currentdate, monthCopy});
+     }
   }
 
   /*componentWillUnmount(){
@@ -259,6 +284,8 @@ export default connect(
     saveLocalData,
     markGoal,
     deleteGoal,
-    newDate
+    newDate,
+    newWeek,
+    newMonth
   }
 )(Goals);
