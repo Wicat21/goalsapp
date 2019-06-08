@@ -100,7 +100,7 @@ class Goals extends Component {
       <View>
         <View style={styles.headerStyle}>
             <Text style={styles.headerText}>Goals</Text>
-            <TouchableOpacity onPress={() =>  console.log('settings')} style={styles.buttonStyle}>
+            <TouchableOpacity onPress={() =>  this.props.navigation.navigate("Settings")} style={styles.buttonStyle}>
               <Icon
                 size={30}
                 color={'white'}
