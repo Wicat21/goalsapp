@@ -41,7 +41,7 @@ export const saveLocalData = () => async (dispatch, getState) => {
 export const newDate = ({ currentdate, goalCopy, onedate}) => (dispatch, getState)=> {
   const onedate = getState().data.onedate;
   let idx = Object.keys(onedate).length;
-  var newdate = {[idx]:{id:idx, today:currentdate, goals:goalCopy}};
+  var newdate = {[idx]:{id:idx, today:currentdate, allmarked:false, goals:goalCopy}};
   _.merge(onedate, newdate);
   return dispatch => {
     dispatch({ 
@@ -55,7 +55,7 @@ export const newDate = ({ currentdate, goalCopy, onedate}) => (dispatch, getStat
 export const newWeek = ({ currentdate, weekCopy, weekly}) => (dispatch, getState)=> {
   const weekly = getState().data.weekly;
   let idw = Object.keys(weekly).length;
-  var newweek = {[idw]:{id:idw, today:currentdate, goals:weekCopy}};
+  var newweek = {[idw]:{id:idw, monday:currentdate, allmarked:false, goals:weekCopy}};
   _.merge(weekly, newweek);
   return dispatch => {
     dispatch({ 
@@ -69,7 +69,7 @@ export const newWeek = ({ currentdate, weekCopy, weekly}) => (dispatch, getState
 export const newMonth = ({ currentdate, monthCopy, monthly}) => (dispatch, getState)=> {
   const monthly = getState().data.monthly;
   let idm = Object.keys(monthly).length;
-  var newmonth = {[idm]:{id:idm, first:currentdate, goals:monthCopy}};
+  var newmonth = {[idm]:{id:idm, first:currentdate, allmarked:false, goals:monthCopy}};
   _.merge(monthly, newmonth);
   return dispatch => {
     dispatch({ 

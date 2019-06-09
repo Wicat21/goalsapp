@@ -17,9 +17,9 @@ import {
 
 const localDataExample = {
 	errorMessage:"error",
-	onedate:{'0':{id:0, today:"2019-06-03", goals: [{ title:"Napi cél", marked: false}]}},
-	weekly:{'0':{id:0, monday:"2019-06-03", goals: [{ title:"Heti cél", marked: false}]}},
-	monthly:{'0':{id:0, first:"2019-05-01", goals: [{ title:"Havi cél", marked: false}]}}
+	onedate:{'0':{id:0, today:"2019-06-03", allmarked:false, goals: [{ title:"Napi cél", marked: false}]}},
+	weekly:{'0':{id:0, monday:"2019-06-03", allmarked:false, goals: [{ title:"Heti cél", marked: false}]}},
+	monthly:{'0':{id:0, first:"2019-05-01", allmarked:false, goals: [{ title:"Havi cél", marked: false}]}}
 }
 
 export const data = (state = localDataExample, action) => {
@@ -40,18 +40,18 @@ export const data = (state = localDataExample, action) => {
 			};
 		case NEW_DATE:
 			return {
-					...state,
-					onedate: action.payload
+				...state,
+				onedate: action.payload
 			}	
 		case NEW_WEEK:
 			return {
-					...state,
-					weekly: action.payload
+				...state,
+				weekly: action.payload
 			}		
 		case NEW_MONTH:
 			return {
-					...state,
-					monthly: action.payload
+				...state,
+				monthly: action.payload
 			}				
 		case FORM_UPDATE:
 			return {

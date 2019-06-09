@@ -26,9 +26,9 @@ class Goals extends Component {
       currentdate: "",
       show: 'daily',
       data: [],
-      onedate: [{today:'', goals: [{title:"", marked:false}]}],
-      weekly: [{monday:'', goals: [{ title:"", marked: false}]}],
-      monthly: [{first:'', goals: [{ title:"", marked: false}]}]
+      onedate: [{today:'', allmarked: false, goals: [{title:"", marked:false}]}],
+      weekly: [{monday:'', allmarked: false, goals: [{ title:"", marked: false}]}],
+      monthly: [{first:'', allmarked: false, goals: [{ title:"", marked: false}]}]
     };
   }
   
@@ -54,12 +54,12 @@ class Goals extends Component {
     this.getWeekDay();
     console.log(weekday)
     const weekly = this.props.data.weekly;
-    const weekCopy = this.props.data.weekly[Object.keys(onedate).length-1].goals.slice();
+    const weekCopy = this.props.data.weekly[Object.keys(weekly).length-1].goals.slice();
     
     const currentmonth = year + "-" + month;
     const monthly = this.props.data.monthly;
-    const monthCopy = this.props.data.monthly[Object.keys(onedate).length-1].goals.slice();
-    const monthnow = this.props.data.monthly[Object.keys(onedate).length-1].first;
+    const monthCopy = this.props.data.monthly[Object.keys(monthly).length-1].goals.slice();
+    const monthnow = this.props.data.monthly[Object.keys(monthly).length-1].first;
     const lastmonth = monthnow.substring(0,7);
     
     this.props.loadLocalData();
@@ -121,9 +121,6 @@ class Goals extends Component {
                 <Text style={styles.headerText2}>Monthly</Text>
               </TouchableOpacity>
             </View>
-            <Text style={styles.today}>
-              Today: {this.state.currentdate}
-            </Text>
           </View>
           <View>
             {data.map((item, i) => {

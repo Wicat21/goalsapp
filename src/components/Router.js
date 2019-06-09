@@ -45,7 +45,7 @@ const RouterComponent = () => {
 					<Scene 
 						key="Calendar" 
 						component={CalendarScene} 
-						title="Calendar"
+						title="Feedback"
 						hideNavBar={true}
 						icon={({ focused }) => (
 							<Icon
