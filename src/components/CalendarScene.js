@@ -34,7 +34,7 @@ class CalendarScene extends Component {
     const igen = { key: "igen", color: "green" };
     const onedate = this.props.data.onedate;
     dottArray = [];
-    {Object.keys(onedate).map(key => {
+    {(onedate).map(key => {
       const date = onedate[key].today 
       const dott = onedate[key].allmarked ? igen : nem;
       dottArray.push({[date]: {dots: [dott]}});
