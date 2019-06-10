@@ -2,7 +2,6 @@ import {
   LOAD_LOCAL_DATA_SUCCESS,
   LOAD_LOCAL_DATA_FAILURE,
   SAVE_LOCAL_DATA,
-  GET_DATE,
   NEW_DATE,
   NEW_WEEK,
   NEW_MONTH,
@@ -11,6 +10,7 @@ import {
  	CREATE_WEEK,
 	CREATE_MONTH, 
   MARK_GOAL,
+  MARK_ALL,
   DELETE_GOAL,
   EDIT_GOAL
 } from "./constants";
@@ -32,9 +32,9 @@ export const loadLocalData = () => async (dispatch, getState) => {
 };
 
 export const saveLocalData = () => async (dispatch, getState) => {
-  const onedate = getState().data.onedate;
-  console.log(onedate);
-  await AsyncStorage.setItem(`${LOCALS_STORAGE}`, JSON.stringify(onedate));
+  const data = getState().data;
+  console.log(data);
+  await AsyncStorage.setItem(`${LOCALS_STORAGE}`, JSON.stringify(data));
   dispatch({ type: SAVE_LOCAL_DATA });
 };
 
@@ -59,17 +59,17 @@ export const newWeek = ({ currentdate, weekCopy, weekly}) => (dispatch, getState
   _.merge(weekly, newweek);
   return dispatch => {
     dispatch({ 
-      type: NEW_DATE,
+      type: NEW_WEEK,
       payload: weekly
     });
     dispatch(saveLocalData());
   };
 };
 
-export const newMonth = ({ currentdate, monthCopy, monthly}) => (dispatch, getState)=> {
+export const newMonth = ({ firstmonth, monthCopy, monthly}) => (dispatch, getState)=> {
   const monthly = getState().data.monthly;
   let idm = Object.keys(monthly).length;
-  var newmonth = {[idm]:{id:idm, first:currentdate, allmarked:false, goals:monthCopy}};
+  var newmonth = {[idm]:{id:idm, first:firstmonth, allmarked:false, goals:monthCopy}};
   _.merge(monthly, newmonth);
   return dispatch => {
     dispatch({ 
@@ -135,6 +135,37 @@ export const markGoal = data => {
     dispatch(saveLocalData());
   };
 };
+
+/*export const markAll = ({onedate}) => {
+  let now = Object.keys(onedate).length-1;
+  if (onedate[now].goals.filter(element => element.marked = false).length >0) {
+    this.setState({onedate[now].allmarked = false})
+  } else {
+    this.setState({onedate[now].allmarked = true})
+  }
+  
+  /*var update = if (onedate[now].goals
+      .filter(function(element) {
+        if (element.marked = true) {
+          return true;
+        }
+        return false;
+      })
+      .length > 0) {
+    return (this.setState({onedate[now].allmarked = true}));
+  } else {
+  return (this.setState({onedate[now].allmarked = false}))
+  }
+  _.merge(onedate, update);
+  
+  return dispatch => {
+    dispatch({
+      type: MARK_ALL,
+      payload: onedate
+    });
+    dispatch(saveLocalData());
+  };
+};*/
 
 export const deleteGoal = data => {
   return dispatch => {

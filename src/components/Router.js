@@ -5,6 +5,7 @@ import AddGoals from './AddGoals';
 import EditGoal from './EditGoal';
 import CalendarScene from './CalendarScene';
 import Settings from './Settings';
+import DayFeedback from './DayFeedback';
 import Icon from 'react-native-vector-icons/EvilIcons';
 
 const RouterComponent = () => {
@@ -62,9 +63,14 @@ const RouterComponent = () => {
 					component={EditGoal}
 					hideNavBar={true}
 				/>
-			<Scene 
+				<Scene 
 					key="Settings"
 					component={Settings}
+					hideNavBar={true}
+				/>
+				<Scene 
+					key="DayFeedback"
+					component={DayFeedback}
 					hideNavBar={true}
 				/>
 			</Scene>

@@ -25,6 +25,10 @@ class CalendarScene extends Component {
     };
   }
 
+  renderDayList(day){
+    this.props.navigation.navigate("DayFeedback")
+  }
+
   renderDaily(){
     const nem = { key: "nem", color: "red" };
     const igen = { key: "igen", color: "green" };
@@ -34,21 +38,64 @@ class CalendarScene extends Component {
       const date = onedate[key].today 
       const dott = onedate[key].allmarked ? igen : nem;
       dottArray.push({[date]: {dots: [dott]}});
-      for (var i in dottArray) 
-            {
-              console.log(i);
-            }
+      dLen = dottArray.length;
+      console.log(dottArray); 
     })}
-    return(
-      <Calendar
-          markedDates={{
-            /*"2019-06-01": { dots: [igen] },
-            "2019-06-02": { dots: [nem] },*/
-          }}
-          markingType={"multi-dot"}
-        />
-    );
+      console.log(dottArray); 
+      return(
+        <Calendar
+            markedDates={ {dottArray}
+              /*{dottArray[1],
+              //{dottArray[1].date}:{dots:[dottArray[1].dott]},
+              //{this.writeOut()}
+              /*"2019-06-01": { dots: [igen] },
+              "2019-06-02": { dots: [nem] },
+            }*/}
+            markingType={"multi-dot"}
+            onDayPress={(day) => this.renderDayList(day)}
+          />
+      );
   }
+
+  /*renderDaily(){
+    const nem = { key: "nem", color: "red" };
+    const igen = { key: "igen", color: "green" };
+    const onedate = this.props.data.onedate;
+    dottArray = [];
+    onedate.map((value, index) => {
+      const date = value.today 
+      const dott = value.allmarked ? igen : nem;
+      const oneDot = {[date]: {dots: dott}}
+      dottArray.push(oneDot);
+    })
+      return(
+        <Calendar
+            markedDates={dottArray}
+            markingType={"multi-dot"}
+            onDayPress={(day) => this.renderDayList(day)}
+          />
+      );
+  }
+  
+  /*renderDaily(){
+    const nem = { key: "nem", color: "red" };
+    const igen = { key: "igen", color: "green" };
+    const onedate = this.props.data.onedate;
+    dottArray = [];
+    {onedate.map((value, index) => {
+      const date = value.today 
+      const dott = value.allmarked ? igen : nem;
+      const oneDot = {[date]: {dots: dott}}
+      dottArray.push(oneDot);
+    })}
+      return(
+        <Calendar
+            markedDates={dottArray}
+            markingType={"multi-dot"}
+            onDayPress={(day) => this.renderDayList(day)}
+          />
+      );
+  }*/
 
   renderWeekly(){
     const weekly = this.props.data.weekly;

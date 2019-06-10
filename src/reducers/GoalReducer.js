@@ -2,7 +2,6 @@ import {
 	LOAD_LOCAL_DATA_SUCCESS,
 	LOAD_LOCAL_DATA_FAILURE,
 	SAVE_LOCAL_DATA, 
-	GET_DATE,
 	NEW_DATE,
 	NEW_WEEK,
 	NEW_MONTH,
@@ -11,6 +10,7 @@ import {
 	CREATE_WEEK,
 	CREATE_MONTH,
 	MARK_GOAL,
+	MARK_ALL,
 	DELETE_GOAL,
 	EDIT_GOAL
 } from '../actions/constants';
@@ -77,7 +77,12 @@ export const data = (state = localDataExample, action) => {
 			return {
 				...state,
 				goals: action.payload
-			}		
+			}	
+		case MARK_ALL:
+			return {
+				...state,
+				onedate: action.payload
+			}					
 		case DELETE_GOAL:
 				return {
 					...state,

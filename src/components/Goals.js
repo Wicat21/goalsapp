@@ -12,6 +12,7 @@ import {
   loadLocalData, 
   saveLocalData, 
   markGoal, 
+  markAll,
   deleteGoal,
   newDate,
   newWeek,
@@ -61,6 +62,7 @@ class Goals extends Component {
     const monthCopy = this.props.data.monthly[Object.keys(monthly).length-1].goals.slice();
     const monthnow = this.props.data.monthly[Object.keys(monthly).length-1].first;
     const lastmonth = monthnow.substring(0,7);
+    const firstmonth = currentmonth + '-01';
     
     this.props.loadLocalData();
     
@@ -71,7 +73,7 @@ class Goals extends Component {
       this.props.newWeek({weekly, currentdate, weekCopy});
     }
     if (lastmonth != currentmonth) {
-      this.props.newMonth({monthly, currentdate, monthCopy});
+      this.props.newMonth({monthly, firstmonth, monthCopy});
      }
   }
 
@@ -81,6 +83,19 @@ class Goals extends Component {
   
   onEditPress(){
     this.props.navigation.navigate("EditGoal");
+  }
+
+  checkmarked(){
+    const onedate = this.props.data.onedate;
+    const now = Object.keys(onedate).length-1;
+    const nowgoals = onedate[now].goals;
+    const nowmarked = onedate[now].allmarked
+    if (nowgoals.filter(element => element.marked = false).length >0) {
+      this.setState({nowmarked : false})
+    } else {
+      this.setState({nowmarked : true})
+    }
+    console.log(nowmarked)
   }
 
   render() {
@@ -100,6 +115,9 @@ class Goals extends Component {
       <View>
         <View style={styles.headerStyle}>
             <Text style={styles.headerText}>Goals</Text>
+            <TouchableOpacity onPress={() =>  this.checkmarked()}>
+              <Text>ALLMARKED?</Text>
+            </TouchableOpacity>            
             <TouchableOpacity onPress={() =>  this.props.navigation.navigate("Settings")} style={styles.buttonStyle}>
               <Icon
                 size={30}
@@ -280,6 +298,7 @@ export default connect(
     loadLocalData,
     saveLocalData,
     markGoal,
+    markAll,
     deleteGoal,
     newDate,
     newWeek,
