@@ -18,7 +18,7 @@ class DayFeedback extends Component {
         return (
             <View>
                 <View style={styles.headerStyle}>
-                    <Text style={styles.headerText}>{day.dateString}</Text>
+                    <Text style={styles.headerText}>még nincs kész</Text>
                 </View>
             </View>
         );

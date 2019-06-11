@@ -53,7 +53,7 @@ class AddGoals extends Component {
           />
           <Picker
             selectedValue={this.state.freq}
-            style={{height: 100, width: 120, alignSelf:'center'}}
+            style={{height: 100, width: 200, alignSelf:'center'}}
             onValueChange={(itemValue, itemIndex) =>
               this.setState({freq: itemValue})
             }>

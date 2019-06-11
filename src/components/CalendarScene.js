@@ -25,7 +25,7 @@ class CalendarScene extends Component {
     };
   }
 
-  renderDayList(day){
+  renderDayList(){
     this.props.navigation.navigate("DayFeedback")
   }
 
@@ -42,61 +42,12 @@ class CalendarScene extends Component {
     })}
       return(
         <Calendar
-            markedDates={dotArray.map(value => value)}
+            markedDates={dotArray.map(value => {value})}
             markingType={"multi-dot"}
             onDayPress={(day) => this.renderDayList(day)}
           />
       );
   }
-
-  /*renderDaily(){
-    const nem = { key: "nem", color: "red" };
-    const igen = { key: "igen", color: "green" };
-    const onedate = this.props.data.onedate;
-    dottArray = [];
-    {(onedate).map(key => {
-      const date = onedate[key].today 
-      const dott = onedate[key].allmarked ? igen : nem;
-      dottArray.push({[date]: {dots: [dott]}});
-      dLen = dottArray.length;
-      console.log(dottArray); 
-    })}
-      console.log(dottArray); 
-      return(
-        <Calendar
-            markedDates={dottArray} //objectet akar erre
-            //markedDates={{dottArray}}
-
-              /*{dottArray[1],
-              //{dottArray[1].date}:{dots:[dottArray[1].dott]},
-              //{this.writeOut()}
-              /*"2019-06-01": { dots: [igen] },
-              "2019-06-02": { dots: [nem] },
-            }
-            markingType={"multi-dot"}
-            onDayPress={(day) => this.renderDayList(day)}
-          />
-      );
-}
-
-  renderDaily(){
-    const nem = { key: "nem", color: "red" };
-    const igen = { key: "igen", color: "green" };
-    const onedate = this.props.data.onedate;
-      return(
-        <Calendar
-            markedDates={
-              Object.keys(onedate).map((value, index) => {
-              const dott = value.allmarked ? igen : nem;
-              const date = value.today;
-              return {date: {dots: dott}},
-            })
-            }
-            markingType={"multi-dot"}
-            onDayPress={(day) => this.renderDayList(day)}
-          />
-      );
-  }*/
 
   renderWeekly(){
     const weekly = this.props.data.weekly;
