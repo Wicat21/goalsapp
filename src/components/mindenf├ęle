@@ -1,0 +1,35 @@
+/const markedColor = item.marked ? "green" : "red";
+    const markedIcon = item.marked ? 'check' : 'minus';
+    var monthlyItem = Object.keys(monthly).map(function(key) {
+      return <option value={key}>{monthly[key]}</option>
+    });
+    const model = this.props.model;
+    let tifOptions = {};
+    if(model.get('tifs')) {
+        monthlyItem= Object.keys(this.props.model.get('tifs')).forEach(function(key) {
+            return <option value={key}>{this.props.model.get('tifs')[key]}</option>
+        });
+    }
+    return (
+      <View>
+        <Text>Monthly feedback</Text>
+        {monthlyItem()}
+        {this.props.data.monthly.map((item, i) => {
+          <View>
+          <Text>{item.first}</Text>
+          <TouchableOpacity
+            onPress={() => { console.log('mark all!!!')
+            //item.allmarked = !item.allmarked;
+            //this.props.markGoal(data);
+            }}
+          >
+            <Icon
+              size={40}
+              color={markedColor}
+              name={markedIcon}
+            />
+          </TouchableOpacity>
+          </View>
+        })}
+      </View>
+    );

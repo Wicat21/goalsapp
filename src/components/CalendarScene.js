@@ -1,13 +1,20 @@
-import React, {Component} from 'react';
-import {StyleSheet, Text, ScrollView, View, TouchableOpacity, Alert} from 'react-native';
-import {Scene, Router, Actions} from 'react-native-router-flux';
+import React, { Component } from "react";
+import {
+  StyleSheet,
+  Text,
+  ScrollView,
+  View,
+  TouchableOpacity,
+  Alert
+} from "react-native";
+import { Scene, Router, Actions } from "react-native-router-flux";
 import { Calendar, CalendarList, Agenda } from "react-native-calendars";
-import Icon from 'react-native-vector-icons/EvilIcons';
+import Icon from "react-native-vector-icons/EvilIcons";
 import { connect } from "react-redux";
-import { 
-  loadLocalData, 
-  saveLocalData, 
-  markGoal, 
+import {
+  loadLocalData,
+  saveLocalData,
+  markGoal,
   deleteGoal,
   newDate,
   newWeek,
@@ -18,143 +25,145 @@ class CalendarScene extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      feedback: 'daily',
-      onedate: [{today:'', allmarked:false, goals: [{title:"", marked:false}]}],
-      weekly: [{monday:'', allmarked:false, goals: [{ title:"", marked: false}]}],
-      monthly: [{first:'', allmarked:false, goals: [{ title:"", marked: false}]}]
+      feedback: "daily",
+      onedate: [
+        { today: "", allmarked: false, goals: [{ title: "", marked: false }] }
+      ],
+      weekly: [
+        { monday: "", allmarked: false, goals: [{ title: "", marked: false }] }
+      ],
+      monthly: [
+        { first: "", allmarked: false, goals: [{ title: "", marked: false }] }
+      ]
     };
+    console.log(this.props);
   }
 
-  renderDayList(){
-    this.props.navigation.navigate("DayFeedback")
+  renderDayList() {
+    this.props.navigation.navigate("DayFeedback");
   }
 
-  renderDaily(){
-    const nem = { key: "nem", color: "red" };
-    const igen = { key: "igen", color: "green" };
+  renderDaily() {
+    const nem = { selected: true, marked: true, selectedColor: "red" };
+    const igen = { selected: true, marked: true, selectedColor: "green" };
     const onedate = this.props.data.onedate;
-    dotArray = [];
-    {Object.keys(onedate).map((value, index) => { //sima onedate.map error volt
-      const date = value.today 
-      const dott = value.allmarked ? igen : nem;
-      const oneDot = {[date]: {dots: dott}}
-      dotArray.push(oneDot);
-    })}
-      return(
-        <Calendar
-            markedDates={dotArray.map(value => {value})}
-            markingType={"multi-dot"}
-            onDayPress={(day) => this.renderDayList(day)}
-          />
-      );
+    dotArray = {};
+    if (onedate) {
+      Object.keys(onedate).map((value, index) => {
+        const date = value.today;
+        const dott = value.allmarked ? igen : nem;
+        dotArray = { ...dotArray, [date]: dott };
+      });
+    }
+    return (
+      <Calendar
+        markedDates={dotArray}
+        markingType={"multi-dot"}
+        onDayPress={day => this.renderDayList(day)}
+      />
+    );
   }
 
-  renderWeekly(){
+  renderWeekly() {
     const weekly = this.props.data.weekly;
     return (
       <View>
         <Text>Weekly feedback</Text>
         {Object.keys(weekly).map(key => {
           const markedColor = weekly[key].allmarked ? "green" : "red";
-          const markedIcon = weekly[key].allmarked ? 'check' : 'minus';
-          const week = weekly[key].monday.substring(0,7);
-            return (
-              <View key={key} style={{ flexDirection:'row' }}>
-                <Text style={{ flex: 1}} >{week}</Text>
-                <TouchableOpacity
-                    onPress={() => { console.log('marked!!')
-                      //data[i].marked = !item.marked;
-                      //this.props.markGoal(data);
-                    }}
-                    style={{ flex: 1 }}
-                  >
-                    <Icon
-                      size={20}
-                      color={markedColor}
-                      name={markedIcon}
-                    />
-                  </TouchableOpacity>
-              </View>
-            );
+          const markedIcon = weekly[key].allmarked ? "check" : "minus";
+          const week = weekly[key].monday.substring(0, 7);
+          return (
+            <View key={key} style={{ flexDirection: "row" }}>
+              <Text style={{ flex: 1 }}>{week}</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  console.log("marked!!");
+                  //data[i].marked = !item.marked;
+                  //this.props.markGoal(data);
+                }}
+                style={{ flex: 1 }}
+              >
+                <Icon size={20} color={markedColor} name={markedIcon} />
+              </TouchableOpacity>
+            </View>
+          );
         })}
       </View>
     );
   }
 
-  renderMonthly(){
+  renderMonthly() {
     const monthly = this.props.data.monthly;
     return (
       <View>
         <Text>Monthly feedback</Text>
         {Object.keys(monthly).map(key => {
           const markedColor = monthly[key].allmarked ? "green" : "red";
-          const markedIcon = monthly[key].allmarked ? 'check' : 'minus';
-          const month = monthly[key].first.substring(0,7);
-            return (
-              <View key={key} style={{ flexDirection:'row' }}>
-                <Text style={{ flex: 1}} >{month}</Text>
-                <TouchableOpacity
-                    onPress={() => { console.log('marked!!')
-                      //data[i].marked = !item.marked;
-                      //this.props.markGoal(data);
-                    }}
-                    style={{ flex: 1 }}
-                  >
-                    <Icon
-                      size={20}
-                      color={markedColor}
-                      name={markedIcon}
-                    />
-                  </TouchableOpacity>
-              </View>
-            );
+          const markedIcon = monthly[key].allmarked ? "check" : "minus";
+          const month = monthly[key].first.substring(0, 7);
+          return (
+            <View key={key} style={{ flexDirection: "row" }}>
+              <Text style={{ flex: 1 }}>{month}</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  console.log("marked!!");
+                  //data[i].marked = !item.marked;
+                  //this.props.markGoal(data);
+                }}
+                style={{ flex: 1 }}
+              >
+                <Icon size={20} color={markedColor} name={markedIcon} />
+              </TouchableOpacity>
+            </View>
+          );
         })}
       </View>
     );
   }
 
-  renderFeedback(){
-    if (this.state.feedback == 'daily') {
-      return (
-      this.renderDaily()
-      )
-    } if (this.state.feedback == 'weekly'){
-      return (
-        this.renderWeekly()
-      )
-    } if (this.state.feedback == 'monthly'){
-      return (
-      this.renderMonthly()
-      )
+  renderFeedback() {
+    if (this.state.feedback == "daily") {
+      return this.renderDaily();
+    }
+    if (this.state.feedback == "weekly") {
+      return this.renderWeekly();
+    }
+    if (this.state.feedback == "monthly") {
+      return this.renderMonthly();
     }
   }
 
-
-  render(){
-    /*const onedate = this.props.data.onedate;
-    /*onedate[i].today: {dots: [markedall=true? igen : nem]} 
-    if (onedate[i].goals)
-    onedate[i].goals */
-    var markarray = [{marked:true}, {marked:false}]
+  render() {
+    var markarray = [{ marked: true }, { marked: false }];
     function markedall(currmarked) {
-      return currmarked = true;
+      return (currmarked = true);
     }
-    console.log(markarray.every(markedall))
-    return(
+    console.log(markarray.every(markedall));
+    return (
       <View>
         <View>
           <View style={styles.headerStyle}>
-              <Text style={styles.headerText}>Feedback</Text>
+            <Text style={styles.headerText}>Feedback</Text>
           </View>
           <View style={styles.headerStyle2}>
             <View style={styles.freq}>
-              <TouchableOpacity onPress={() =>  this.setState({feedback: 'daily'})} style={styles.freqButton}>
+              <TouchableOpacity
+                onPress={() => this.setState({ feedback: "daily" })}
+                style={styles.freqButton}
+              >
                 <Text style={styles.headerText2}>Daily</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() =>  this.setState({feedback: 'weekly'})} style={styles.freqButton}>
+              <TouchableOpacity
+                onPress={() => this.setState({ feedback: "weekly" })}
+                style={styles.freqButton}
+              >
                 <Text style={styles.headerText2}>Weekly</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() =>  this.setState({feedback: 'monthly'})} style={styles.freqButton}>
+              <TouchableOpacity
+                onPress={() => this.setState({ feedback: "monthly" })}
+                style={styles.freqButton}
+              >
                 <Text style={styles.headerText2}>Monthly</Text>
               </TouchableOpacity>
             </View>
@@ -162,9 +171,9 @@ class CalendarScene extends Component {
           {this.renderFeedback()}
         </View>
       </View>
-    )
+    );
   }
-};
+}
 
 const styles = {
   headerStyle: {
@@ -206,17 +215,17 @@ const styles = {
   freq: {
     paddingLeft: 25,
     paddingRight: 25,
-    flex:2,
-    justifyContent: 'space-between',
-    flexDirection: 'row'
+    flex: 2,
+    justifyContent: "space-between",
+    flexDirection: "row"
   },
   freqButton: {
-    borderColor: 'white',
+    borderColor: "white",
     borderWidth: 1,
     borderRadius: 5,
     padding: 5
-  }, 
-}
+  }
+};
 
 export default connect(
   ({ data }) => ({ data }),

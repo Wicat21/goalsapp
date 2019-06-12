@@ -8,18 +8,18 @@ import {
 } from "react-native";
 import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
-import { 
-  loadLocalData, 
-  saveLocalData, 
-  markGoal, 
+import {
+  loadLocalData,
+  saveLocalData,
+  markGoal,
   markAll,
   deleteGoal,
   newDate,
   newWeek,
   newMonth
 } from "../actions";
-import Icon from 'react-native-vector-icons/EvilIcons';
-import BackgroundJob from 'react-native-background-job';
+import Icon from "react-native-vector-icons/EvilIcons";
+import BackgroundJob from "react-native-background-job";
 
 const regularJobKey = "regularJobKey";
 
@@ -27,46 +27,58 @@ BackgroundJob.register({
   jobKey: regularJobKey,
   job: () => {
     var date = new Date().getDate();
-    if(date <= 9)
-      date = '0'+date;
-    var month =  new Date().getMonth() + 1;
-    if(month <= 9)
-      month = '0'+month;
+    if (date <= 9) date = "0" + date;
+    var month = new Date().getMonth() + 1;
+    if (month <= 9) month = "0" + month;
     var year = new Date().getFullYear();
     const currentdate = year + "-" + month + "-" + date;
     const onedate = this.props.data.onedate;
-    const last = this.props.data.onedate[Object.keys(onedate).length-1];
-    const goalCopy = this.props.data.onedate[Object.keys(onedate).length-1].goals.slice();
-    
-    var weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const last = this.props.data.onedate[Object.keys(onedate).length - 1];
+    const goalCopy = this.props.data.onedate[
+      Object.keys(onedate).length - 1
+    ].goals.slice();
+
+    var weekdays = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ];
     var day = new Date().getDay();
     const weekday = weekdays[day];
 
-    console.log(weekday)
+    console.log(weekday);
     const weekly = this.props.data.weekly;
-    const weekCopy = this.props.data.weekly[Object.keys(weekly).length-1].goals.slice();
-    
+    const weekCopy = this.props.data.weekly[
+      Object.keys(weekly).length - 1
+    ].goals.slice();
+
     const currentmonth = year + "-" + month;
     const monthly = this.props.data.monthly;
-    const monthCopy = this.props.data.monthly[Object.keys(monthly).length-1].goals.slice();
-    const monthnow = this.props.data.monthly[Object.keys(monthly).length-1].first;
-    const lastmonth = monthnow.substring(0,7);
-    const firstmonth = currentmonth + '-01';
-    
+    const monthCopy = this.props.data.monthly[
+      Object.keys(monthly).length - 1
+    ].goals.slice();
+    const monthnow = this.props.data.monthly[Object.keys(monthly).length - 1]
+      .first;
+    const lastmonth = monthnow.substring(0, 7);
+    const firstmonth = currentmonth + "-01";
+
     this.props.loadLocalData();
-    
-    if (last.today != currentdate) { 
-      this.props.newDate({onedate, currentdate, goalCopy});
-    } 
+
+    if (last.today != currentdate) {
+      this.props.newDate({ onedate, currentdate, goalCopy });
+    }
     if (weekday == "Monday") {
-      this.props.newWeek({weekly, currentdate, weekCopy});
+      this.props.newWeek({ weekly, currentdate, weekCopy });
     }
     if (lastmonth != currentmonth) {
-      this.props.newMonth({monthly, firstmonth, monthCopy});
-     }
-
+      this.props.newMonth({ monthly, firstmonth, monthCopy });
+    }
   }
-});  
+});
 
 class Goals extends Component {
   constructor(props) {
@@ -74,18 +86,22 @@ class Goals extends Component {
     this.state = {
       jobs: [],
       currentdate: "",
-      show: 'daily',
+      show: "daily",
       data: [],
-      onedate: [{today:'', allmarked: false, goals: [{title:"", marked:false}]}],
-      weekly: [{monday:'', allmarked: false, goals: [{ title:"", marked: false}]}],
-      monthly: [{first:'', allmarked: false, goals: [{ title:"", marked: false}]}]
+      onedate: [
+      ],
+      weekly: [
+      ],
+      monthly: [
+      ]
     };
+    this.props.loadLocalData();
   }
 
   componentWillMount() {
     var currenthour = new Date().getHours();
     var currentmin = new Date().getMinutes();
-    const currenttime = (currenthour*60 + currentmin) * 60000;
+    const currenttime = (currenthour * 60 + currentmin) * 60000;
     const fulltime = 86400000;
     var difftime = fulltime - currenttime + 1000;
 
@@ -97,12 +113,12 @@ class Goals extends Component {
       period: 900000
     });
   }
- 
-  onEditPress(){
+
+  onEditPress() {
     this.props.navigation.navigate("EditGoal");
   }
 
- /* checkmarked(){
+  /* checkmarked(){
     const onedate = this.props.data.onedate;
     const now = Object.keys(onedate).length-1;
     const nowgoals = onedate[now].goals;
@@ -119,37 +135,47 @@ class Goals extends Component {
     const onedate = this.props.data.onedate;
     const weekly = this.props.data.weekly;
     const monthly = this.props.data.monthly;
-    var idx = Object.keys(onedate).length-1;
-    var idw = Object.keys(weekly).length-1;
-    var idm = Object.keys(monthly).length-1;
-    console.log(Object.keys(onedate).length-1);
+    var idx = Object.keys(onedate).length - 1;
+    var idw = Object.keys(weekly).length - 1;
+    var idm = Object.keys(monthly).length - 1;
+    console.log(Object.keys(onedate).length - 1);
+    console.log(Object.keys(weekly).length - 1);
+    console.log(Object.keys(monthly).length - 1);
     console.log(this.state.data);
     const ddata = this.props.data.onedate[idx].goals;
     const wdata = this.props.data.weekly[idw].goals;
     const mdata = this.props.data.monthly[idm].goals;
-    const data = ddata;
-    return (
+    const data = this.state.data;
+    return(
       <View>
         <View style={styles.headerStyle}>
-            <Text style={styles.headerText}>Goals</Text>         
-            <TouchableOpacity onPress={() =>  this.props.navigation.navigate("Settings")} style={styles.buttonStyle}>
-              <Icon
-                size={30}
-                color={'white'}
-                name={'gear'}
-              />
-            </TouchableOpacity>
+          <Text style={styles.headerText}>Goals</Text>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate("Settings")}
+            style={styles.buttonStyle}
+          >
+            <Icon size={30} color={"white"} name={"gear"} />
+          </TouchableOpacity>
         </View>
         <ScrollView>
           <View style={styles.headerStyle2}>
             <View style={styles.freq}>
-              <TouchableOpacity onPress={() =>  this.setState({data: ddata})} style={styles.freqButton}>
+              <TouchableOpacity
+                onPress={() => this.setState({ data: ddata })}
+                style={styles.freqButton}
+              >
                 <Text style={styles.headerText2}>Daily</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() =>  this.setState({data: wdata})} style={styles.freqButton}>
+              <TouchableOpacity
+                onPress={() => this.setState({ data: wdata })}
+                style={styles.freqButton}
+              >
                 <Text style={styles.headerText2}>Weekly</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() =>  this.setState({data: mdata})} style={styles.freqButton}>
+              <TouchableOpacity
+                onPress={() => this.setState({ data: mdata })}
+                style={styles.freqButton}
+              >
                 <Text style={styles.headerText2}>Monthly</Text>
               </TouchableOpacity>
             </View>
@@ -158,10 +184,13 @@ class Goals extends Component {
             {data.map((item, i) => {
               console.log(item);
               const markedColor = item.marked ? "green" : "red";
-              const markedIcon = item.marked ? 'check' : 'minus';
+              const markedIcon = item.marked ? "check" : "minus";
               const yo = item.title;
               return (
-                <View style={[styles.card, { borderColor: markedColor }]}>
+                <View
+                  key={i}
+                  style={[styles.card, { borderColor: markedColor }]}
+                >
                   <Text style={styles.titleText}>{item.title}</Text>
                   <TouchableOpacity
                     onPress={() => {
@@ -170,40 +199,31 @@ class Goals extends Component {
                     }}
                     style={{ flex: 1 }}
                   >
-                    <Icon
-                      size={40}
-                      color={markedColor}
-                      name={markedIcon}
-                    />
+                    <Icon size={40} color={markedColor} name={markedIcon} />
                   </TouchableOpacity>
                   <View style={styles.editDelete}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      data.splice(i, 1);
-                      this.props.deleteGoal(data); 
-                      this.onEditPress(this.props.navigation.navigate("EditGoal"))}}
-                    style={{ flex: 2 }}
-                  >
-                    <Icon
-                      size={30}
-                      color={'black'}
-                      name={'pencil'}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => {
-                      data.splice(i, 1);
-                      console.log(data);
-                      this.props.deleteGoal(data);
-                    }}
-                    style={{ flex: 2 }}
-                  >
-                    <Icon
-                      size={30}
-                      color={'black'}
-                      name={'trash'}
-                    />
-                  </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        data.splice(i, 1);
+                        this.props.deleteGoal(data);
+                        this.onEditPress(
+                          this.props.navigation.navigate("EditGoal")
+                        );
+                      }}
+                      style={{ flex: 2 }}
+                    >
+                      <Icon size={30} color={"black"} name={"pencil"} />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        data.splice(i, 1);
+                        console.log(data);
+                        this.props.deleteGoal(data);
+                      }}
+                      style={{ flex: 2 }}
+                    >
+                      <Icon size={30} color={"black"} name={"trash"} />
+                    </TouchableOpacity>
                   </View>
                 </View>
               );
@@ -236,13 +256,13 @@ const styles = {
     color: "white"
   },
   buttonStyle: {
-    position: 'relative',
-    backgroundColor: '#3c4f76',
+    position: "relative",
+    backgroundColor: "#3c4f76",
     width: 50,
     height: 50,
     borderRadius: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     elevation: 8,
     left: -10
   },
@@ -266,23 +286,23 @@ const styles = {
   freq: {
     paddingLeft: 25,
     paddingRight: 25,
-    flex:2,
-    justifyContent: 'space-between',
-    flexDirection: 'row'
+    flex: 2,
+    justifyContent: "space-between",
+    flexDirection: "row"
   },
   freqButton: {
-    borderColor: 'white',
+    borderColor: "white",
     borderWidth: 1,
     borderRadius: 5,
     padding: 5
   },
   today: {
     paddingRight: 25,
-    flex:1,
+    flex: 1,
     fontSize: 10,
     color: "white",
-    flexDirection: 'row'
-  },  
+    flexDirection: "row"
+  },
   card: {
     marginLeft: 20,
     marginRight: 20,
@@ -292,19 +312,19 @@ const styles = {
     borderColor: "blue",
     borderRadius: 10,
     height: 75,
-    alignItems: 'center',
+    alignItems: "center",
     paddingLeft: 10,
     paddingRight: 10
   },
   titleText: {
     fontSize: 15,
-    fontWeight: 'bold',
-    flex:4,
+    fontWeight: "bold",
+    flex: 4,
     paddingLeft: 10
   },
   editDelete: {
-    flex:1,
-    alignItems: 'flex-end',
+    flex: 1,
+    alignItems: "flex-end",
     padding: 5
   }
 };
