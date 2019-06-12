@@ -12,6 +12,15 @@ import {
 import PushController from './PushController';
 import PushNotification from 'react-native-push-notification';
 import TimePicker from "react-native-24h-timepicker";
+import BackgroundJob from 'react-native-background-job';
+
+const regularJobKey = "regularJobKey";
+BackgroundJob.register({
+  jobKey: regularJobKey,
+  job: () => PushNotification.localNotificationSchedule({
+    message: "Don't forget your goals!"
+  })
+});  
 
 class Settings extends Component {
     constructor(props) {
@@ -21,6 +30,7 @@ class Settings extends Component {
             switchValue: false,
             hour: '5',
             time: '',
+            difftime: '',
             hour: null, 
             minute: null
         };
@@ -49,11 +59,29 @@ class Settings extends Component {
      
       onConfirm(hour, minute) {
         this.setState({ time: `${hour}:${minute}`, hour:hour, minute:minute });
+        this.calcdiff(hour, minute);
         this.TimePicker.close();
+
       }
 
     toggleSwitch = (value) => {
         this.setState({switchValue: value});
+    }
+
+    calcdiff(hour, minute){
+        var currenthour = new Date().getHours();
+        var currentmin = new Date().getMinutes();
+        const currenttime = (currenthour*60 + currentmin) * 60000;
+        const fulltime = 86400000;
+        var selectedtime = (hour * 60 + minute) * 60000;
+        if (selectedtime > currenttime){
+            this.setState({difftime: selectedtime - currenttime + 1000});
+        } else {
+            this.setState({difftime: fulltime - currenttime + selectedtime + 1000});
+        };
+        console.log(selectedtime); //ez nem ismert
+        console.log(currenttime);
+        console.log(this.state.difftime);
     }
 
     renderNotification(){
@@ -77,6 +105,22 @@ class Settings extends Component {
                         onCancel={() => this.onCancel()}
                         onConfirm={(hour, minute) => this.onConfirm(hour, minute)}
                     />
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => {
+                            //meg kell szerezni a calcdiffet az oncomfirm végéből
+                            BackgroundJob.schedule({
+                                jobKey: regularJobKey,
+                                notificationTitle: "Notification title",
+                                notificationText: "Notification text",
+                                timeout: difftime,
+                                period: 900000
+                            });
+                        this.props.navigation.navigate("Goals");
+                        }}
+                    >
+                        <Text>Save</Text>
+                    </TouchableOpacity>
                 </View>
             );
         }

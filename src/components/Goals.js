@@ -19,27 +19,13 @@ import {
   newMonth
 } from "../actions";
 import Icon from 'react-native-vector-icons/EvilIcons';
+import BackgroundJob from 'react-native-background-job';
 
-class Goals extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      currentdate: "",
-      show: 'daily',
-      data: [],
-      onedate: [{today:'', allmarked: false, goals: [{title:"", marked:false}]}],
-      weekly: [{monday:'', allmarked: false, goals: [{ title:"", marked: false}]}],
-      monthly: [{first:'', allmarked: false, goals: [{ title:"", marked: false}]}]
-    };
-  }
-  
-  getWeekDay(){
-    var weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    var day = new Date().getDay();
-    return weekday = weekdays[day];
-  }
+const regularJobKey = "regularJobKey";
 
-  componentWillMount() {
+BackgroundJob.register({
+  jobKey: regularJobKey,
+  job: () => {
     var date = new Date().getDate();
     if(date <= 9)
       date = '0'+date;
@@ -52,7 +38,10 @@ class Goals extends Component {
     const last = this.props.data.onedate[Object.keys(onedate).length-1];
     const goalCopy = this.props.data.onedate[Object.keys(onedate).length-1].goals.slice();
     
-    this.getWeekDay();
+    var weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    var day = new Date().getDay();
+    const weekday = weekdays[day];
+
     console.log(weekday)
     const weekly = this.props.data.weekly;
     const weekCopy = this.props.data.weekly[Object.keys(weekly).length-1].goals.slice();
@@ -75,17 +64,45 @@ class Goals extends Component {
     if (lastmonth != currentmonth) {
       this.props.newMonth({monthly, firstmonth, monthCopy});
      }
+
+  }
+});  
+
+class Goals extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      jobs: [],
+      currentdate: "",
+      show: 'daily',
+      data: [],
+      onedate: [{today:'', allmarked: false, goals: [{title:"", marked:false}]}],
+      weekly: [{monday:'', allmarked: false, goals: [{ title:"", marked: false}]}],
+      monthly: [{first:'', allmarked: false, goals: [{ title:"", marked: false}]}]
+    };
   }
 
-  /*componentWillUnmount(){
-    this.props.saveLocalData()
-  }*/
-  
+  componentWillMount() {
+    var currenthour = new Date().getHours();
+    var currentmin = new Date().getMinutes();
+    const currenttime = (currenthour*60 + currentmin) * 60000;
+    const fulltime = 86400000;
+    var difftime = fulltime - currenttime + 1000;
+
+    BackgroundJob.schedule({
+      jobKey: regularJobKey,
+      notificationTitle: "Notification title",
+      notificationText: "Notification text",
+      timeout: difftime,
+      period: 900000
+    });
+  }
+ 
   onEditPress(){
     this.props.navigation.navigate("EditGoal");
   }
 
-  checkmarked(){
+ /* checkmarked(){
     const onedate = this.props.data.onedate;
     const now = Object.keys(onedate).length-1;
     const nowgoals = onedate[now].goals;
@@ -96,7 +113,7 @@ class Goals extends Component {
       this.setState({nowmarked : true})
     }
     console.log(nowmarked)
-  }
+  }*/
 
   render() {
     const onedate = this.props.data.onedate;
@@ -114,10 +131,7 @@ class Goals extends Component {
     return (
       <View>
         <View style={styles.headerStyle}>
-            <Text style={styles.headerText}>Goals</Text>
-            <TouchableOpacity onPress={() =>  this.checkmarked()}>
-              <Text>ALLMARKED?</Text>
-            </TouchableOpacity>            
+            <Text style={styles.headerText}>Goals</Text>         
             <TouchableOpacity onPress={() =>  this.props.navigation.navigate("Settings")} style={styles.buttonStyle}>
               <Icon
                 size={30}
