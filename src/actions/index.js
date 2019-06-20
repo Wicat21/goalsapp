@@ -23,86 +23,123 @@ const LOCALS_STORAGE = "@goals:locals";
 
 export const loadLocalData = () => async (dispatch, getState) => {
   const value = await AsyncStorage.getItem(`${LOCALS_STORAGE}`);
-  console.log(JSON.parse(value));
-  console.log(value)
-  console.log(value)
-  console.log(value)
-  console.log(value)
-  console.log(value)
-  console.log(value)
   if (value !== null) {
     console.log(value);
     dispatch({ type: LOAD_LOCAL_DATA_SUCCESS, data: JSON.parse(value) });
   } else {
+    dispatch(newDate());
+    dispatch(newWeek());
+    dispatch(newMonth());
     dispatch({ type: LOAD_LOCAL_DATA_FAILURE, error: "error" });
   }
 };
 
 export const saveLocalData = () => async (dispatch, getState) => {
   const data = getState().data;
-  console.log(data);
-  console.log(data);
-  console.log(data);
-  console.log(data);
   AsyncStorage.setItem(`${LOCALS_STORAGE}`, JSON.stringify(data));
   dispatch({ type: SAVE_LOCAL_DATA });
 };
 
-export const newDate = ({ currentdate, goalCopy, onedate }) => (
+export const newDate = () => (
   dispatch,
   getState
 ) => {
   const onedate = getState().data.onedate;
+  var date = new Date().getDate();
+  if (date <= 9) date = "0" + date;
+  var month = new Date().getMonth() + 1;
+  if (month <= 9) month = "0" + month;
+  var year = new Date().getFullYear();
+  const currentdate = year + "-" + month + "-" + date;
+  const last = onedate[Object.keys(onedate).length - 1];
+  const goalCopy = onedate[
+    Object.keys(onedate).length - 1
+  ].goals.slice();
   let idx = Object.keys(onedate).length;
   var newdate = {
     [idx]: { id: idx, today: currentdate, allmarked: false, goals: goalCopy }
   };
   _.merge(onedate, newdate);
-  return dispatch => {
-    dispatch({
-      type: NEW_DATE,
-      payload: onedate
-    });
-    dispatch(saveLocalData());
-  };
+  if (last.today != currentdate) {
+      dispatch({
+        type: NEW_DATE,
+        payload: onedate
+      });
+      dispatch(saveLocalData());
+  }
 };
 
-export const newWeek = ({ currentdate, weekCopy, weekly }) => (
+export const newWeek = () => (
   dispatch,
   getState
 ) => {
   const weekly = getState().data.weekly;
+  var weekdays = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday"
+  ];
+  var date = new Date().getDate();
+  if (date <= 9) date = "0" + date;
+  var month = new Date().getMonth() + 1;
+  if (month <= 9) month = "0" + month;
+  var year = new Date().getFullYear();
+  const currentdate = year + "-" + month + "-" + date;
+  
+  var day = new Date().getDay();
+  const weekday = weekdays[day];
+  console.log(weekday);
+  //const weekly = this.props.data.weekly;
+  const weekCopy = weekly[
+    Object.keys(weekly).length - 1
+  ].goals.slice();
   let idw = Object.keys(weekly).length;
   var newweek = {
     [idw]: { id: idw, monday: currentdate, allmarked: false, goals: weekCopy }
   };
   _.merge(weekly, newweek);
-  return dispatch => {
+  if (weekday == "Monday") {
     dispatch({
       type: NEW_WEEK,
       payload: weekly
     });
     dispatch(saveLocalData());
-  };
+  }
 };
 
-export const newMonth = ({ firstmonth, monthCopy, monthly }) => (
+export const newMonth = () => (
   dispatch,
   getState
 ) => {
   const monthly = getState().data.monthly;
+  var month = new Date().getMonth() + 1;
+  if (month <= 9) month = "0" + month;
+  var year = new Date().getFullYear();
+  const currentmonth = year + "-" + month;
+  //const monthly = this.props.data.monthly;
+  const monthCopy = monthly[
+    Object.keys(monthly).length - 1
+  ].goals.slice();
+  const monthnow = monthly[Object.keys(monthly).length - 1]
+    .first;
+  const lastmonth = monthnow.substring(0, 7);
+  const firstmonth = currentmonth + "-01";
   let idm = Object.keys(monthly).length;
   var newmonth = {
     [idm]: { id: idm, first: firstmonth, allmarked: false, goals: monthCopy }
   };
   _.merge(monthly, newmonth);
-  return dispatch => {
+  if (lastmonth != currentmonth) {
     dispatch({
       type: NEW_MONTH,
       payload: monthly
     });
     dispatch(saveLocalData());
-  };
+  }
 };
 
 export const formUpdate = ({ prop, value }) => {

@@ -75,7 +75,7 @@ export const data = (state = localDataExample, action) => {
       return {
         ...state,
         [action.payload.prop]: action.payload.value
-      };
+      };      
     case CREATE_GOAL:
       return {
         ...state,

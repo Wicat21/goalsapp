@@ -16,68 +16,21 @@ import {
   deleteGoal,
   newDate,
   newWeek,
-  newMonth
+  newMonth,
+  createDates
 } from "../actions";
 import Icon from "react-native-vector-icons/EvilIcons";
 import BackgroundJob from "react-native-background-job";
-
+import store from "../store";
+import { dispatch } from 'redux';
 const regularJobKey = "regularJobKey";
 
 BackgroundJob.register({
   jobKey: regularJobKey,
-  job: () => {
-    var date = new Date().getDate();
-    if (date <= 9) date = "0" + date;
-    var month = new Date().getMonth() + 1;
-    if (month <= 9) month = "0" + month;
-    var year = new Date().getFullYear();
-    const currentdate = year + "-" + month + "-" + date;
-    const onedate = this.props.data.onedate;
-    const last = this.props.data.onedate[Object.keys(onedate).length - 1];
-    const goalCopy = this.props.data.onedate[
-      Object.keys(onedate).length - 1
-    ].goals.slice();
-
-    var weekdays = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday"
-    ];
-    var day = new Date().getDay();
-    const weekday = weekdays[day];
-
-    console.log(weekday);
-    const weekly = this.props.data.weekly;
-    const weekCopy = this.props.data.weekly[
-      Object.keys(weekly).length - 1
-    ].goals.slice();
-
-    const currentmonth = year + "-" + month;
-    const monthly = this.props.data.monthly;
-    const monthCopy = this.props.data.monthly[
-      Object.keys(monthly).length - 1
-    ].goals.slice();
-    const monthnow = this.props.data.monthly[Object.keys(monthly).length - 1]
-      .first;
-    const lastmonth = monthnow.substring(0, 7);
-    const firstmonth = currentmonth + "-01";
-
-    this.props.loadLocalData();
-
-    if (last.today != currentdate) {
-      this.props.newDate({ onedate, currentdate, goalCopy });
-    }
-    if (weekday == "Monday") {
-      this.props.newWeek({ weekly, currentdate, weekCopy });
-    }
-    if (lastmonth != currentmonth) {
-      this.props.newMonth({ monthly, firstmonth, monthCopy });
-    }
-  }
+  job: () => console.log('megy')
+  //store.dispatch(newDate()) - nem működik - nem találtam megoldást órák alatt :()
+  /*store.dispatch(newWeek());
+  store.dispatch(newMonth());*/
 });
 
 class Goals extends Component {
@@ -103,14 +56,15 @@ class Goals extends Component {
     var currentmin = new Date().getMinutes();
     const currenttime = (currenthour * 60 + currentmin) * 60000;
     const fulltime = 86400000;
-    var difftime = fulltime - currenttime + 1000;
-
+    //var difftime = fulltime - currenttime + 1000;
+    var difftime = 60000;
     BackgroundJob.schedule({
       jobKey: regularJobKey,
       notificationTitle: "Notification title",
       notificationText: "Notification text",
       timeout: difftime,
-      period: 900000
+      period: 60000,
+      allowExecutionInForeground: true
     });
   }
 
@@ -138,9 +92,6 @@ class Goals extends Component {
     var idx = Object.keys(onedate).length - 1;
     var idw = Object.keys(weekly).length - 1;
     var idm = Object.keys(monthly).length - 1;
-    console.log(Object.keys(onedate).length - 1);
-    console.log(Object.keys(weekly).length - 1);
-    console.log(Object.keys(monthly).length - 1);
     console.log(this.state.data);
     const ddata = this.props.data.onedate[idx].goals;
     const wdata = this.props.data.weekly[idw].goals;
@@ -339,6 +290,7 @@ export default connect(
     deleteGoal,
     newDate,
     newWeek,
-    newMonth
+    newMonth,
+    createDates
   }
 )(Goals);
